@@ -20,16 +20,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        
+
+
         // initiate a Switch
         Switch simpleSwitch = findViewById(R.id.onswitch);
         simpleSwitch.setTextOn("On"); // displayed text of the Switch whenever it is in checked or on state
         simpleSwitch.setTextOff("Off"); // displayed text of the Switch whenever it is in unchecked i.e. o
-//set the current state of a Switch
-        simpleSwitch.setChecked(true);
+        //set the current state of a Switch
+        simpleSwitch.setChecked(false);
 
-        Spinner spin = (Spinner) findViewById(R.id.spinner1);
-
-        spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        // initiate a Spinner
+        Spinner spin = findViewById(R.id.spinner1);
+        spin.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         categories.add("High");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
