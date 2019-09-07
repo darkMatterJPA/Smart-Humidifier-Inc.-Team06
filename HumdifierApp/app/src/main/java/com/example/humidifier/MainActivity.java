@@ -2,6 +2,7 @@ package com.example.humidifier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,28 +11,36 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    // initiate a Switch
+    Switch simpleSwitch;
+    // initiate a Spinner
+    Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
 
 
-        // initiate a Switch
-        Switch simpleSwitch = findViewById(R.id.onswitch);
+
+        simpleSwitch = findViewById(R.id.onswitch);
         simpleSwitch.setTextOn("On"); // displayed text of the Switch whenever it is in checked or on state
         simpleSwitch.setTextOff("Off"); // displayed text of the Switch whenever it is in unchecked i.e. o
         //set the current state of a Switch
         simpleSwitch.setChecked(false);
 
-        // initiate a Spinner
-        Spinner spin = findViewById(R.id.spinner1);
+        spin = findViewById(R.id.spinner1);
         spin.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
@@ -50,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spin.setAdapter(dataAdapter);
 
 
+        netCom com = new netCom();
+        com.execute();
+
 
 
     }
@@ -65,6 +77,50 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+    }
+
+
+    private class netCom extends AsyncTask<String,String,String>
+    {
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try {
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                String url ="https://www.google.com";
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                //textView.setText("Response is: "+ response.substring(0,500));
+                                 simpleSwitch.setChecked(true);
+                                Toast.makeText(getApplicationContext(), "Response is: "+
+                                        response.substring(0,500), Toast.LENGTH_LONG).show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //textView.setText("That didn't work!");
+                        Toast.makeText(getApplicationContext(), "That didn't work! " , Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 
 
