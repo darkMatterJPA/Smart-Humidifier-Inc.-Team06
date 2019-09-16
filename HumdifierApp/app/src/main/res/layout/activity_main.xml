@@ -19,64 +19,79 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/humidifierlogo" />
 
-    <EditText
-        android:id="@+id/Power"
-        android:layout_width="211dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:background="@android:color/transparent"
-        android:clickable="false"
-        android:ems="10"
-        android:fontFamily="sans-serif-black"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-        android:text="Humidifier Power"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="210dp"
+    <TextView
+        android:id="@+id/actual"
+        android:layout_width="225dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:autofillHints=""
+        android:layout_marginTop="48dp"
         android:background="@android:color/transparent"
         android:clickable="false"
         android:ems="10"
         android:fontFamily="sans-serif-black"
-        android:inputType="text"
         android:text="Humidity"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Power" />
+        app:layout_constraintTop_toBottomOf="@+id/power" />
 
     <Switch
         android:id="@+id/onswitch"
         android:layout_width="140dp"
         android:layout_height="47dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="12dp"
         android:checked="true"
         android:fontFamily="sans-serif-black"
         android:text="Off/On"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.636"
-        app:layout_constraintStart_toEndOf="@+id/Power"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="127dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        android:layout_width="140dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/onswitch" />
+
+    <TextView
+        android:id="@+id/actual"
+        android:layout_width="225dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="232dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Actual Humidity"
+
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/power"
+        android:layout_width="225dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Humidifier Power"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/water"
+        android:layout_width="225dp"
+        android:layout_height="47dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Water Level"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="553dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
