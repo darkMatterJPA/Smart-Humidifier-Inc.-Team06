@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Humidifier</string>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>
