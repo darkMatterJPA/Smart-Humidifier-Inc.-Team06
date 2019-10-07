@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url = "https://www.google.com";
+                String url = "https://infinite-journey-50054.herokuapp.com/";
 
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
