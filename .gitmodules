@@ -1,0 +1,2 @@
+[submodule "Adafruit_Python_DHT"]
+	url = https://github.com/adafruit/Adafruit_Python_DHT.git
