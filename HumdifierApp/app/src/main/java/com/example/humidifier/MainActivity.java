@@ -19,8 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
@@ -135,31 +137,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             try {
 
+                //                                    Toast.makeText(getApplicationContext(), "Response is: " +
+//                                            obj.toString().substring(0, 500), Toast.LENGTH_LONG).show();
+
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url = "https://www.google.com";
+                String url = "https://infinite-journey-50054.herokuapp.com/";
 
                 // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
                             @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                //textView.setText("Response is: "+ response.substring(0,500));
-                                simpleSwitch.setChecked(true);
+                            public void onResponse(JSONObject response) {
                                 Toast.makeText(getApplicationContext(), "Response is: " +
-                                        response.substring(0, 500), Toast.LENGTH_LONG).show();
+                                        response.toString(), Toast.LENGTH_LONG).show();
                             }
                         }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //textView.setText("That didn't work!");
-                        Toast.makeText(getApplicationContext(), "That didn't work! ", Toast.LENGTH_LONG).show();
-                    }
-                });
 
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // TODO: Handle error
+
+                            }
+                        });
                 // Add the request to the RequestQueue.
-                queue.add(stringRequest);
+                queue.add(jsonObjectRequest);
 
             } catch (Exception e) {
                 e.printStackTrace();
