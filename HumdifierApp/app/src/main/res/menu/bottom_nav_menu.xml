@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/action_schedule"
+        android:checkable="false"
+        android:enabled="true"
+        android:icon="@drawable/schedule"
+        android:title="Schedule"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/action_graph"
+        android:enabled="true"
+        android:icon="@drawable/graph"
+        android:title="Graph"
+        />
+
+</menu>
