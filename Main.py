@@ -2,6 +2,11 @@
 import smbus
 import time
 import Adafruit_DHT
+import socketio
+import json
+
+#Client socket.IO
+sio = socketio.Client()
 
 #Constants
 
@@ -38,7 +43,6 @@ Temp = 0
 
 #Humidity
 def GetRhTemp():
-	print("in func")
 	i = 0
 	global RH
 	global Temp
@@ -46,7 +50,6 @@ def GetRhTemp():
 	while i < 10:
 		humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 		if humidity is not None and temperature is not None:
-			print("in if")
 			RH = humidity
 			Temp = temperature
 			return 1
@@ -65,24 +68,31 @@ def GetWater():
 
 #Relay
 def DeviceOn():
-    global RelOne
+	global RelOne
+	global Device_State
 	status = bus.read_byte_data(RELAY_ADDR, OneStat)
 	if status is not None:
 		return 1
-	bus.write_byte_data(RELAY_ADDR, RelOne)
+	bus.write_byte(RELAY_ADDR, RelOne)
 	time.sleep(0.1)
+	Device_State = 1
 
 def DeviceOff():
 	if AllRelayOff():
-        global Device_State
+		global Device_State
 		Device_State = 0
 
 def SetPwrLvl(setting):
+	global Device_State
 	relays = CheckRelay()
-	bus.write_byte_data(RELAY_ADDR, 0x01)
-	time.sleep(0.1)
-	bus.write_byte_data(RELAY_ADDR, setting)
-	time.sleep(0.1)
+	if relays[0] == 0:
+		bus.write_byte(RELAY_ADDR, 0x01)
+		time.sleep(0.1)
+	if relays[setting -1] == 0:
+	
+		bus.write_byte(RELAY_ADDR, setting)
+		time.sleep(0.1)
+	Device_State = 1
 	return 1
 
 def AllRelayOff():
@@ -92,9 +102,9 @@ def AllRelayOff():
 
 #@return array of 4
 def CheckRelay():
-    ret = [0,0,0,0]
-	for x in ret
-		ret[x] = bus.read_byte_data(RELAY_ADDR, 0x5 + x)
+	ret = [0,0,0,0]
+	for x in ret:
+		ret[x] = bus.read_byte_data(RELAY_ADDR, 0x4 + x)
 	return ret
 
 #Control
@@ -110,31 +120,51 @@ def WriteTxt(txt, str):
 	fileTemp.close()
 	return 1
 
+#Socket.IO event listeners
+@sio.on('schedule-to-pi')
+def on_schedule(data):
+        ''' Do some stuff '''
+
+@sio.on('power-status-and-humidity-Setting-to-pi')
+def on_powerStatusHumidity(data):
+        ''' Do some stuff '''
+
+
+''' Sample way of sending an event to the server
+	sio.emit('waterLevel-from-pi',' some data ')
+
+'''
+
+
 def MainLoop():
+	global sio
+	sio.connect('https://polar-meadow-51053.herokuapp.com/')
 	#initialize
 	global RH
 	global Temp
 	global Device_State
-    GoalRH = 0
+	GoalRH = 100
 	Device_State = 0
 	pwrLvl = 0
+	#SetPwrLvl(2)
 	DeviceOff()
-
 	while True:
 		#Read Txt and check for new commands
-
+		print('in Loop')
 		#Read Hardware
 		CheckRelay()
 		GetRhTemp()
-
 		#Handle
-        if RH > GoalRH:
-            DeviceOff()
-		else if Device_State == 0
+		if RH > GoalRH:
+			print('in if 1')
+			DeviceOff()
+		elif Device_State == 0:
+			print('in if 2')
 			SetPwrLvl(pwrLvl)
 		water = GetWater()
         
 		print('Humidity, Temp, Water')
+	
 		print(RH, Temp, water)
 		time.sleep(2)
 
