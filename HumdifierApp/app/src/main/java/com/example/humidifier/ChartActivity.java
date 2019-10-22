@@ -19,6 +19,14 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+        //https://weeklycoding.com/mpandroidchart-documentation/
+        //https://weeklycoding.com/mpandroidchart-documentation/setting-data/
+        //https://javadoc.jitpack.io/com/github/PhilJay/MPAndroidChart/v3.1.0/javadoc/
+
+
+        //https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+        // to send object to another activity
+
         BarChart chart = (BarChart) findViewById(R.id.chart);
 
         List<BarEntry> entries = new ArrayList<>();
