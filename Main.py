@@ -19,12 +19,14 @@ OneStat = 0x04
 TwoStat = 0x05
 ThreeStat = 0x06
 FourStat = 0x07
-TOG_ALL_OFF = 0xA
-TOG_ALL_ON = 0xB
-TOG_ALL = 0xC
+TOG_ALL_OFF = 0x0A
+TOG_ALL_ON = 0x0B
+TOG_ALL = 0x0C
 
 RELAY_OFF = 0
 RELAY_ON = 15
+
+Device_State = 0
 
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
@@ -34,6 +36,7 @@ pin = 23
 RH = 0
 Temp = 0
 
+#Humidity
 def GetRhTemp():
 	print("in func")
 	i = 0
@@ -52,6 +55,7 @@ def GetRhTemp():
 	print('Failed to get reading. Try again!')
 	return 0
 
+#Water Level
 def GetWater():
 	bus.write_word_data(ADC_ADDR, 0x01, 0xC383)
 	time.sleep(0.1)
@@ -59,57 +63,77 @@ def GetWater():
 	#Data is inverted and 
 	return data
 
+#Relay
 def DeviceOn():
+    global RelOne
 	status = bus.read_byte_data(RELAY_ADDR, OneStat)
 	if status is not None:
 		return 1
-	bus.write_byte_data(RELAY_ADDR, RelTwo)
+	bus.write_byte_data(RELAY_ADDR, RelOne)
 	time.sleep(0.1)
-	return 1
 
 def DeviceOff():
-	AllRelayOff()
-	return 1
+	if AllRelayOff():
+        global Device_State
+		Device_State = 0
 
 def SetPwrLvl(setting):
-	AllRelayOff()
-	bus.write_byte_data(RELAY_ADDR, RelOne)
+	relays = CheckRelay()
+	bus.write_byte_data(RELAY_ADDR, 0x01)
 	time.sleep(0.1)
 	bus.write_byte_data(RELAY_ADDR, setting)
 	time.sleep(0.1)
 	return 1
 
 def AllRelayOff():
-	status = bus.read_byte_data(RELAY_ADDR, OneStat)
-	if status is not None:
-		bus.write_byte(RELAY_ADDR, RelOne)
-		time.sleep(0.1)
-	status = bus.read_byte_data(RELAY_ADDR, TwoStat)
-	if status is not None:
-		bus.write_byte(RELAY_ADDR, RelTwo)
-		time.sleep(0.1)
-	status = bus.read_byte_data(RELAY_ADDR, ThreeStat)
-	if status is not None:
-		bus.write_byte(RELAY_ADDR, RelThree)
-		time.sleep(0.1)
-	status = bus.read_byte_data(RELAY_ADDR, FourStat)
-	if status is not None:
-		bus.write_byte(RELAY_ADDR, RelFour)
-		time.sleep(0.1)
-	return 1
+    global TOG_ALL_OFF
+    bus.write_byte(RELAY_ADDR, TOG_ALL_OFF)
+    time.sleep(0.1)
 
+#@return array of 4
+def CheckRelay():
+    ret = [0,0,0,0]
+	for x in ret
+		ret[x] = bus.read_byte_data(RELAY_ADDR, 0x5 + x)
+	return ret
+
+#Control
 def ReadTxt(txt):
+	fileTemp = open(txt,'r')
+	
+	fileTemp.close()
 	return 1
+    
 def WriteTxt(txt, str):
+	fileTemp = open(txt,'r+')
+	
+	fileTemp.close()
 	return 1
 
 def MainLoop():
-	global _RH
-	global _Temp	
-	AllRelayOff()
+	#initialize
+	global RH
+	global Temp
+	global Device_State
+    GoalRH = 0
+	Device_State = 0
+	pwrLvl = 0
+	DeviceOff()
+
 	while True:
+		#Read Txt and check for new commands
+
+		#Read Hardware
+		CheckRelay()
 		GetRhTemp()
+
+		#Handle
+        if RH > GoalRH:
+            DeviceOff()
+		else if Device_State == 0
+			SetPwrLvl(pwrLvl)
 		water = GetWater()
+        
 		print('Humidity, Temp, Water')
 		print(RH, Temp, water)
 		time.sleep(2)
