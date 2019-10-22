@@ -106,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //}
         //});
 
-        netCom com = new netCom();
-        com.execute();
 
     }
 
@@ -130,47 +128,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private class netCom extends AsyncTask<String, String, String> {
 
-        @Override
-        protected String doInBackground(String... strings) {
-
-            try {
-
-                //                                    Toast.makeText(getApplicationContext(), "Response is: " +
-//                                            obj.toString().substring(0, 500), Toast.LENGTH_LONG).show();
-
-                // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url = "https://infinite-journey-50054.herokuapp.com/";
-
-                // Request a string response from the provided URL.
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(getApplicationContext(), "Response is: " +
-                                        response.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // TODO: Handle error
-
-                            }
-                        });
-                // Add the request to the RequestQueue.
-                queue.add(jsonObjectRequest);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
 
 }
 
