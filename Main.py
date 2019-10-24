@@ -61,10 +61,38 @@ def GetRhTemp():
 #Water Level
 def GetWater():
 	bus.write_word_data(ADC_ADDR, 0x01, 0xC383)
-	time.sleep(0.1)
+	time.sleep(0.3)
 	data = bus.read_word_data(ADC_ADDR, 0x00)
-	#Data is inverted and 
-	return data
+	temp1 = data >> 8
+	temp2 = (data & 0x0F) << 8
+	newDat = temp1 + temp2
+	return MapWater(newDat)
+
+def MapWater(rawWater):
+	#Constants
+	maxIn = 0x0950
+	minIn = 0x02FF
+	rangeIn = maxIn - minIn
+	maxOut = 100
+	minOut = 25
+	rangeOut = 75
+
+	#Calculations
+	temp = rawWater - minIn
+	if temp < 0:
+		temp = 0
+	temp = temp/rangeIn
+	#print(temp)
+	out = rangeOut * temp
+	#print(out)
+	out = out + minOut;
+
+	#Checks
+	if out >= maxOut:
+		return maxOut
+	elif out <= minOut:
+		return minOut
+	return out
 
 #Relay
 def DeviceOn():
@@ -105,6 +133,7 @@ def CheckRelay():
 	ret = [0,0,0,0]
 	for x in ret:
 		ret[x] = bus.read_byte_data(RELAY_ADDR, 0x4 + x)
+		time.sleep(0.1)
 	return ret
 
 #Control
@@ -152,20 +181,19 @@ def MainLoop():
 		#Read Txt and check for new commands
 		print('in Loop')
 		#Read Hardware
-		CheckRelay()
+		#CheckRelay()
 		GetRhTemp()
 		#Handle
 		if RH > GoalRH:
-			print('in if 1')
+			#print('in if 1')
 			DeviceOff()
 		elif Device_State == 0:
-			print('in if 2')
+			#print('in if 2')
 			SetPwrLvl(pwrLvl)
 		water = GetWater()
-        
 		print('Humidity, Temp, Water')
-	
 		print(RH, Temp, water)
+		#print("{0:0x}".format(water))
 		time.sleep(2)
 
 MainLoop()
