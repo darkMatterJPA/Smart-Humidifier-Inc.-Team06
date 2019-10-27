@@ -1,2 +1,6 @@
 
 server/
+
+Adafruit_Python_DHT/
+server_socket_IO/
+
