@@ -2,4 +2,18 @@
     <string name="app_name">Humidifier</string>
     <string name="title_activity_main2">MainActivity2</string>
 
+
+    <string-array name="days_of_week">
+        <item>Every day</item>
+        <item>Mon - Fri</item>
+        <item>Sat and Sun</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
 </resources>
