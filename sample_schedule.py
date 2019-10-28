@@ -8,7 +8,7 @@ x = {
     "Monday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
     "Tuesday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
     "Wednesday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
-    "Thursday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
+    "Thursday": [{"startTime": 1621 , "endTime": 1622}, {"startTime": 1700 , "endTime": 1800}],
     "Friday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
     "Saturday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
     "Sunday": [{"startTime": 800 , "endTime": 1200}, {"startTime": 1600 , "endTime": 1800}],
@@ -18,28 +18,18 @@ x = {
 y = json.dumps(x) 
 
 today = currentDayTime[6]
-currentTime = currentDayTime[]
+currentHour = currentDayTime[3]
+currentMinute = currentDayTime[4]
 
-if today == 0:
-   '''Do stuff'''
-   startTime = x["Monday"][0]["startTime"]
-   if 
+z = int(str(currentHour)+str(currentMinute))
+print(z)
 
-elif today == 1:
-    '''Do stuff'''
-    x["Tuesday"]
-elif today == 2:
-    '''Do stuff'''
-    x["Wednesday"]
-elif today == 3:
-    '''Do stuff'''
-    x["Thursday"]
-elif today == 4:
-    '''Do stuff'''
-    x["Friday"]
-elif today == 5:
-    '''Do stuff'''
-    x["Saturday"]
-elif today == 6:
-    '''Do stuff'''
-    x["Sunday"]
+days = ("Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+
+for i in range(len(x[days[today]][0])):
+    startTime = x[days[today]][i]["startTime"]
+    endTime = x[days[today]][i]["endTime"]
+    if z >= startTime and z <= endTime:
+        print('''ON''')
+    else:
+        print('''oFF''')
