@@ -3,7 +3,10 @@ package com.example.humidifier;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -11,11 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity2 extends AppCompatActivity {
+
+public class MainActivity2 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    // initiate a Spinner
+    Spinner spin;
 
 
-   //Day buttons
+    //Day buttons
     ToggleButton tSu;
     ToggleButton tM;
     ToggleButton tT;
@@ -31,10 +40,30 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-
+        //Time picker
         TimePicker tp = (TimePicker) this.findViewById(R.id.time_picker);
         tp.setIs24HourView(true);
 
+        //Spinner for humidity level
+        spin =
+
+                findViewById(R.id.spinner2);
+        spin.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<String>();
+        categories.add("Low");
+        categories.add("Medium");
+        categories.add("High");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spin.setAdapter(dataAdapter);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -55,7 +84,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-
+        //days of week
         tSu = findViewById(R.id.tSu);
         tM = findViewById(R.id.tM);
         tT = findViewById(R.id.tT);
@@ -90,13 +119,25 @@ public class MainActivity2 extends AppCompatActivity {
       //  Toast.makeText(this, markedButtons, Toast.LENGTH_SHORT).show();
 
     }
-
+    //home button on bottom nav bar
     private void goHome() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
     }
 
+    //used for humidity level spinner
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
 
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
 
 }

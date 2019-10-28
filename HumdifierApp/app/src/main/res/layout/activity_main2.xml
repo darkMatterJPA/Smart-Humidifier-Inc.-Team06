@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity2">
 
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="140dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="252dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TimePicker
         android:id="@+id/time_picker2"
         android:layout_width="169dp"
@@ -34,7 +45,7 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/sched"
         android:layout_width="197dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -172,7 +183,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/startTime"
         android:layout_width="201dp"
         android:layout_height="51dp"
         android:layout_marginTop="108dp"
@@ -185,7 +196,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/endTime"
         android:layout_width="201dp"
         android:layout_height="51dp"
         android:layout_marginTop="252dp"
@@ -201,6 +212,39 @@
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/savesched"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="44dp"
+        android:text="SAVE SCHEDULE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/viewsched"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="44dp"
+        android:text="VIEW SCHEDULE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/humidLevel"
+        android:layout_width="201dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="396dp"
+        android:text="HUMIDITY LEVEL"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/Bluepurple"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
