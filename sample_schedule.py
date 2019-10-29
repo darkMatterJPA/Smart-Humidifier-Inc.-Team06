@@ -22,7 +22,7 @@ currentHour = currentDayTime[3]
 currentMinute = currentDayTime[4]
 
 z = int(str(currentHour)+str(currentMinute))
-print(z)
+
 
 days = ("Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
 

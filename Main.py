@@ -36,6 +36,7 @@ Device_State = 0
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
 pin = 23
+GoalRH = 100
 
 #Variables
 RH = 0
@@ -85,7 +86,7 @@ def MapWater(rawWater):
 	#print(temp)
 	out = rangeOut * temp
 	#print(out)
-	out = out + minOut;
+	out = out + minOut
 
 	#Checks
 	if out >= maxOut:
@@ -103,6 +104,7 @@ def DeviceOn():
 		return 1
 	bus.write_byte(RELAY_ADDR, RelOne)
 	time.sleep(0.1)
+	SetPwrLvl()
 	Device_State = 1
 
 def DeviceOff():
@@ -110,8 +112,22 @@ def DeviceOff():
 		global Device_State
 		Device_State = 0
 
-def SetPwrLvl(setting):
+def SetPwrLvl():
 	global Device_State
+	global RH
+	global GoalRH
+	high = 4
+	medium = 3
+	low = 2
+	
+	error = GoalRh - RH
+	if error > 15:
+		setting = high
+	elif error > 10:
+		setting = medium
+	else:
+		setting = low
+	
 	relays = CheckRelay()
 	if relays[0] == 0:
 		bus.write_byte(RELAY_ADDR, 0x01)
@@ -137,6 +153,30 @@ def CheckRelay():
 	return ret
 
 #Control
+def CheckSchedule()
+	global GoalRH
+	global RH
+
+	y = json.dumps(x) 
+	today = currentDayTime[6]
+	currentHour = currentDayTime[3]
+	currentMinute = currentDayTime[4]
+	z = int(str(currentHour)+str(currentMinute))
+
+	days = ("Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+
+	for i in range(len(x[days[today]][0])):
+		startTime = x[days[today]][i]["startTime"]
+		endTime = x[days[today]][i]["endTime"]
+		if z >= startTime and z <= endTime:
+			GetRhTemp()
+			if RH < GoalRH:
+				DeviceOff()
+			else:
+				DeviceOn()
+		else:
+			DeviceOff()
+
 def ReadTxt(txt):
 	fileTemp = open(txt,'r')
 	
@@ -172,28 +212,31 @@ def MainLoop():
 	global RH
 	global Temp
 	global Device_State
-	GoalRH = 100
+	global GoalRH
 	Device_State = 0
-	pwrLvl = 0
-	#SetPwrLvl(2)
+	fullTime = 0
+	emptyTime = 0
 	DeviceOff()
+	
 	while True:
-		#Read Txt and check for new commands
-		print('in Loop')
+		#Read and handle Server
+
 		#Read Hardware
-		#CheckRelay()
 		GetRhTemp()
-		#Handle
-		if RH > GoalRH:
-			#print('in if 1')
-			DeviceOff()
-		elif Device_State == 0:
-			#print('in if 2')
-			SetPwrLvl(pwrLvl)
 		water = GetWater()
 		print('Humidity, Temp, Water')
 		print(RH, Temp, water)
-		#print("{0:0x}".format(water))
+		
+		#Handle
+		CheckSchedule()
+		if water == 100:
+			fullTime = time.clock_gettime
+		elif water < 25:
+			#notify server
+			emptyTime = time.clock_gettime
+
+		#send data to server
+
 		time.sleep(2)
 
 MainLoop()
