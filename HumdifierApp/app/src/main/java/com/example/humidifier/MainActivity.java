@@ -17,11 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Switch simpleSwitch;
     // initiate a Spinner
     Spinner spin;
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("https://polar-meadow-51053.herokuapp.com/");
+        } catch (URISyntaxException e) {}
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
