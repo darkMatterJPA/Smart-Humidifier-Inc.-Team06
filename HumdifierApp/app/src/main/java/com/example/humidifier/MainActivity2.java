@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
     // initiate a Spinner
     Spinner spin;
+    private Button viewButton;
 
 
     //Day buttons
@@ -44,6 +46,14 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         TimePicker tp = (TimePicker) this.findViewById(R.id.time_picker);
         tp.setIs24HourView(true);
 
+        viewButton = findViewById(R.id.viewsched);
+        viewButton.setOnClickListener(new View.OnClickListener() {
+
+        public void onClick(View v){
+            Intent schedActivityIntent = new Intent(getApplicationContext(), UserScheduleActivity.class);
+            startActivity(schedActivityIntent);
+        }
+                                      });
         //Spinner for humidity level
         spin =
 
@@ -77,6 +87,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                         break;
                     case R.id.action_graph:
                         Toast.makeText(MainActivity2.this, "Graph", Toast.LENGTH_SHORT).show();
+                        Intent g = new Intent(MainActivity2.this, ChartActivity.class);
+                        startActivity(g);
                         break;
 
                 }
