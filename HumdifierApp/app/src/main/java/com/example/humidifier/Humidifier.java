@@ -4,7 +4,6 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
-import java.net.Socket;
 import java.net.URISyntaxException;
 
 

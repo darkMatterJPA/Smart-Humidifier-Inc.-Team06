@@ -219,7 +219,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="172dp"
         android:layout_marginEnd="44dp"
+        android:backgroundTint="@color/Bluepurple"
         android:text="SAVE SCHEDULE"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -229,7 +231,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
         android:layout_marginEnd="44dp"
+        android:backgroundTint="@color/Bluepurple"
         android:text="VIEW SCHEDULE"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

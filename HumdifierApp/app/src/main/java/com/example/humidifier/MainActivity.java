@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         break;
                     case R.id.action_graph:
                         Toast.makeText(MainActivity.this, "Graph", Toast.LENGTH_SHORT).show();
+                        Intent g = new Intent(MainActivity.this, ChartActivity.class);
+                        startActivity(g);
                         break;
 
                 }
