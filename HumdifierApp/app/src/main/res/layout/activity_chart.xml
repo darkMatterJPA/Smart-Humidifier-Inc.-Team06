@@ -6,17 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ChartActivity">
 
-    android:layout_width = "match_parent"
-    android:layout_height = "match_parent"
-    tools:context = ".MainActivity">
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/BarChart"
-        android:layout_width="380dp"
-        android:layout_height="536dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="68dp"
+
+<!--    <com.github.mikephil.charting.charts.BarChart-->
+<!--        android:id="@+id/BarChart"-->
+<!--        android:layout_width="380dp"-->
+<!--        android:layout_height="536dp"-->
+<!--        android:layout_marginStart="12dp"-->
+<!--        android:layout_marginTop="68dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="408dp"
+        android:layout_height="588dp"
+        android:layout_marginBottom="132dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package com.example.humidifier;
 
-import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
@@ -15,7 +14,7 @@ public class Humidifier {
             mSocket = IO.socket("https://polar-meadow-51053.herokuapp.com/");
         } catch (URISyntaxException e) {}
     }
-
+mSocket.on("dffd"."rgrgtr");
 
     public Humidifier()
     {
