@@ -8,14 +8,22 @@
 
 
 
-<!--    <com.github.mikephil.charting.charts.BarChart-->
-<!--        android:id="@+id/BarChart"-->
-<!--        android:layout_width="380dp"-->
-<!--        android:layout_height="536dp"-->
-<!--        android:layout_marginStart="12dp"-->
-<!--        android:layout_marginTop="68dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="visible"
+        app:itemBackground="@color/Bluepurple"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:visibility="visible" />
+
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
@@ -26,5 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.121" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

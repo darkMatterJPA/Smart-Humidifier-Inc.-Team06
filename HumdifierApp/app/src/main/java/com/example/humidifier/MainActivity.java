@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     Humidifier humidifier;
 
-    private Socket mSocket;
-
-    {
-        try {
-            mSocket = IO.socket("https://polar-meadow-51053.herokuapp.com/");
-        } catch (URISyntaxException e) {
-        }
-    }
+//    private Socket mSocket;
+//
+//    {
+//        try {
+//            mSocket = IO.socket("https://polar-meadow-51053.herokuapp.com/");
+//        } catch (URISyntaxException e) {
+//        }
+//    }
 
 
     @Override
@@ -95,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("Low");
-        categories.add("Medium");
-        categories.add("High");
+        categories.add("25%");
+        categories.add("50%");
+        categories.add("75%");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -146,39 +146,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Bind to LocalService
-        Intent intent = new Intent(this, Humidifier.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unbindService(connection);
-       //  = false;
-    }
-
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private final ServiceConnection connection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            Humidifier binder = (Humidifier) service;
-            humidifier = binder.getService();
-            //mBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            //mBound = false;
-        }
-    };
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        // Bind to LocalService
+//        Intent intent = new Intent(this, Humidifier.class);
+//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        unbindService(connection);
+//       //  = false;
+//    }
+//
+//    /**
+//     * Defines callbacks for service binding, passed to bindService()
+//     */
+//    private final ServiceConnection connection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName className, IBinder service) {
+//            // We've bound to LocalService, cast the IBinder and get LocalService instance
+//            Humidifier binder = (Humidifier) service;
+//            humidifier = binder.getService();
+//            //mBound = true;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName arg0) {
+//            //mBound = false;
+//        }
+//    };
 
 }
 
