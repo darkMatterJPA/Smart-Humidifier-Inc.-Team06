@@ -52,12 +52,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         public void onClick(View v){
             Intent schedActivityIntent = new Intent(getApplicationContext(), UserScheduleActivity.class);
             startActivity(schedActivityIntent);
-        }
-                                      });
-        //Spinner for humidity level
-        spin =
+        }});
 
-                findViewById(R.id.spinner2);
+        //Spinner for humidity level
+        spin = findViewById(R.id.spinner2);
         spin.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements

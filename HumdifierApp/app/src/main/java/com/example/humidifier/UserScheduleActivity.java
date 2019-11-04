@@ -13,7 +13,7 @@ public class UserScheduleActivity extends AppCompatActivity {
 
     private ListView mListView;
     private ArrayAdapter aAdapter;
-   private String[] ScheduleData ={"fjkghj", "dkajgakj"};
+   private String[] ScheduleData ={" "};
     private Button backToSched;
 
     @Override
@@ -31,6 +31,8 @@ public class UserScheduleActivity extends AppCompatActivity {
             startActivity(Main2ActivityIntent);
         }
     });
+
+
 
     }
 }
