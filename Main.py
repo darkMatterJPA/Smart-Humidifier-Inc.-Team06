@@ -35,7 +35,7 @@ Device_State = 0
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
 pin = 23
-GoalRH = 26
+GoalRH = 48
 
 #Variables
 RH = 0
@@ -130,14 +130,12 @@ def SetPwrLvl():
 	
 	relays = CheckRelay()
 	print(relays)
-	if relays[0] == 0:
+	if relays[setting - 1] == 0 or relays[0] == 0:
+		AllRelayOff()
 		bus.write_byte(RELAY_ADDR, 0x01)
-		time.sleep(0.1)
-		Device_State = 1
-	if relays[setting - 1] == 0:
-		print(setting)
+		time.sleep(0.05)
 		bus.write_byte(RELAY_ADDR, setting)
-		time.sleep(0.1)
+		time.sleep(0.05)
 	return 1
 
 def AllRelayOff():
@@ -234,20 +232,14 @@ def MainLoop():
 		print('Humidity, Temp, Water')
 		print(RH, Temp, water)
 
-		#TODO Work on messy else if
-		if RH < (GoalRH - 5) && Device_State = 0:
-			SetPwrLvl()
-		elif RH > GoalRH:
-			DeviceOff()
-		elif RH < GoalRH && Device_State = 1:
-			setPwrLvl()
 		#Handle
+		if RH < (GoalRH - 3) and Device_State == 0: #wont turn back on until under threashold
+			SetPwrLvl()
+		elif RH > (GoalRH + 1): #Off when Humidity hits under threashold
+			DeviceOff()
+		elif  Device_State == 1: #updates pwr lvl while humidifier is on
+			SetPwrLvl()
 		#CheckSchedule()
-		if water == 100:
-			fullTime = time.clock_gettime
-		elif water < 25:
-			#notify server
-			emptyTime = time.clock_gettime
 
 		#send data to server
 
