@@ -129,9 +129,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("Low");
-        categories.add("Medium");
-        categories.add("High");
+        categories.add("25%");
+        categories.add("50%");
+        categories.add("75%");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);

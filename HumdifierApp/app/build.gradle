@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'ca.antonious:materialdaypicker:0.6.0'
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'com.github.nkzawa:socket.io-client:0.6.0'

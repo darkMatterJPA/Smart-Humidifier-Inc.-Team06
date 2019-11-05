@@ -124,7 +124,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             markedButtons +="F,";
         }
         if(tS.isChecked()){
-            markedButtons +="S";
+            markedButtons +="S,";
         }
       //  Toast.makeText(this, markedButtons, Toast.LENGTH_SHORT).show();
 

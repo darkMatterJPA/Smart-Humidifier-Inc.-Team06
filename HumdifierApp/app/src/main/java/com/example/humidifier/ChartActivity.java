@@ -9,16 +9,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -26,7 +16,6 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -64,25 +53,25 @@ public class ChartActivity extends AppCompatActivity {
 
 
 
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//
-//                    case R.id.action_home:
-//                        Toast.makeText(ChartActivity.this, "Home", Toast.LENGTH_SHORT).show();
-//                        Intent b = new Intent(ChartActivity.this, MainActivity.class);
-//                        startActivity(b);
-//                        break;
-//                    case R.id.action_graph:
-//                        Toast.makeText(ChartActivity.this, "Graph", Toast.LENGTH_SHORT).show();
-//                        break;
-//
-//                }
-//                return true;
-//            }
-//        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.action_home:
+                        Toast.makeText(ChartActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                        Intent b = new Intent(ChartActivity.this, MainActivity.class);
+                        startActivity(b);
+                        break;
+                    case R.id.action_graph:
+                        Toast.makeText(ChartActivity.this, "Graph", Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
+                return true;
+            }
+        });
     }
 
 
