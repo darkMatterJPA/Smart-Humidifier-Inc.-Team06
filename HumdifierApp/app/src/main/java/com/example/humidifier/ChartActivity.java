@@ -67,6 +67,11 @@ public class ChartActivity extends AppCompatActivity {
                     case R.id.action_graph:
                         Toast.makeText(ChartActivity.this, "Graph", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.action_schedule:
+                        Toast.makeText(ChartActivity.this, "Schedule", Toast.LENGTH_SHORT).show();
+                        Intent a = new Intent(ChartActivity.this, MainActivity2.class);
+                        startActivity(a);
+                        break;
 
                 }
                 return true;
