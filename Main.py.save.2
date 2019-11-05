@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import smbus
 import time
@@ -20,11 +19,11 @@ RELAY_ADDR = 0x6D
 RelOne = 0x01
 RelTwo = 0x02
 RelThree = 0x03
-RelFour = 0x04
-OneStat = 0x05
-TwoStat = 0x06
-ThreeStat = 0x07
-FourStat = 0x08
+RelFour = 0x03
+OneStat = 0x04
+TwoStat = 0x05
+ThreeStat = 0x06
+FourStat = 0x07
 TOG_ALL_OFF = 0x0A
 TOG_ALL_ON = 0x0B
 TOG_ALL = 0x0C
@@ -32,18 +31,16 @@ TOG_ALL = 0x0C
 RELAY_OFF = 0
 RELAY_ON = 15
 
+Device_State = 0
+
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
 pin = 23
-GoalRH = 26
+GoalRH = 100
 
 #Variables
 RH = 0
 Temp = 0
-Schedule = 0
-Device_State = 0
-ScheduleState = 0
-ManualState = 0
 
 #Humidity
 def GetRhTemp():
@@ -122,8 +119,8 @@ def SetPwrLvl():
 	high = 4
 	medium = 3
 	low = 2
-	error = GoalRH - RH
-
+	
+	error = GoalRh - RH
 	if error > 15:
 		setting = high
 	elif error > 10:
@@ -132,46 +129,34 @@ def SetPwrLvl():
 		setting = low
 	
 	relays = CheckRelay()
-	print(relays)
 	if relays[0] == 0:
 		bus.write_byte(RELAY_ADDR, 0x01)
 		time.sleep(0.1)
-		Device_State = 1
-	if relays[setting - 1] == 0:
-		print(setting)
+	if relays[setting -1] == 0:
+	
 		bus.write_byte(RELAY_ADDR, setting)
 		time.sleep(0.1)
+	Device_State = 1
 	return 1
 
 def AllRelayOff():
-	global TOG_ALL_OFF
-	bus.write_byte(RELAY_ADDR, TOG_ALL_OFF)
-	time.sleep(0.1)
-	return 1
+    global TOG_ALL_OFF
+    bus.write_byte(RELAY_ADDR, TOG_ALL_OFF)
+    time.sleep(0.1)
 
 #@return array of 4
 def CheckRelay():
 	ret = [0,0,0,0]
-	ret[0] = bus.read_byte_data(RELAY_ADDR, 0x05)
-	time.sleep(0.01)
-	ret[1] = bus.read_byte_data(RELAY_ADDR, 0x06)
-	time.sleep(0.01)
-	ret[2] = bus.read_byte_data(RELAY_ADDR, 0x07)
-	time.sleep(0.01)
-	ret[3] = bus.read_byte_data(RELAY_ADDR, 0x08)
-	time.sleep(0.01)
+	for x in ret:
+		ret[x] = bus.read_byte_data(RELAY_ADDR, 0x4 + x)
+		time.sleep(0.1)
 	return ret
 
 #Control
 def CheckSchedule():
 	global GoalRH
 	global RH
-	global ScheduleState
 	global Schedule
-	global ManualState
-	if Schedule == 0:
-		return
-
 	currentDayTime = time.localtime(time.time())
 	today = currentDayTime[6]
 	currentHour = currentDayTime[3]
@@ -180,20 +165,24 @@ def CheckSchedule():
 
 	days = ("Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
 
-	for i in range(len(Schedule[days[today]][0])):
-		startTime = Schedule[days[today]][i]["startTime"]
-		endTime = Schedule[days[today]][i]["endTime"]
-		if z >= startTime and z <= endTime and ManualState == 0:
-			ScheduleState = 1
+	for i in range(len(x[days[today]][0])):
+		startTime = x[days[today]][i]["startTime"]
+		endTime = x[days[today]][i]["endTime"]
+		if z >= startTime and z <= endTime:
+			GetRhTemp()
+			if RH < GoalRH:
+				DeviceOff()
+			else:
+				DeviceOn()
 		else:
-			ScheduleState = 0
+			DeviceOff()
 
 def ReadTxt(txt):
 	fileTemp = open(txt,'r')
 	
 	fileTemp.close()
 	return 1
-    
+
 def WriteTxt(txt, str):
 	fileTemp = open(txt,'r+')
 	
@@ -203,16 +192,13 @@ def WriteTxt(txt, str):
 #Socket.IO event listeners
 @sio.on('schedule-to-pi')
 def on_schedule(data):
-	global Schedule
-	Schedule = data
+        ''' Do some stuff '''
 
-@sio.on('power-status-to-pi')
+@sio.on('power-status-and-humidity-Setting-to-pi')
 def on_powerStatusHumidity(data):
-	if data['power'] == 'On':
-		global ManualState
-		print('Message Recieved')
-		SetPwrLvl()
-		ManualState = 1
+        ''' Do some stuff '''
+
+
 ''' Sample way of sending an event to the server
 	sio.emit('waterLevel-from-pi',' some data ')
 
@@ -227,29 +213,22 @@ def MainLoop():
 	global Temp
 	global Device_State
 	global GoalRH
-	global ScheduleState
-	global ManualState
 	Device_State = 0
 	fullTime = 0
 	emptyTime = 0
 	DeviceOff()
-
+	
 	while True:
+		#Read and handle Server
+
 		#Read Hardware
 		GetRhTemp()
 		water = GetWater()
 		print('Humidity, Temp, Water')
 		print(RH, Temp, water)
-
-		if not CheckSchedule():
-			ScheduleState = 0
 		
-		if (RH < (GoalRH - 2) and ScheduleState == 1) or Device_State == 1 or ManualState == 1:
-			SetPwrLvl()
-		elif RH > GoalRH:
-			DeviceOff()
-
 		#Handle
+		CheckSchedule()
 		if water == 100:
 			fullTime = time.clock_gettime
 		elif water < 25:
