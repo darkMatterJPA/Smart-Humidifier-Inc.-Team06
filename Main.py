@@ -35,12 +35,14 @@ Device_State = 0
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
 pin = 23
-GoalRH = 48
+GoalRH = 26
 
 #Variables
 RH = 0
 Temp = 0
 Schedule = 0
+ScheduleState = 0
+ManualState = 0
 
 #Humidity
 def GetRhTemp():
@@ -130,12 +132,14 @@ def SetPwrLvl():
 	
 	relays = CheckRelay()
 	print(relays)
-	if relays[setting - 1] == 0 or relays[0] == 0:
-		AllRelayOff()
+	if relays[0] == 0:
 		bus.write_byte(RELAY_ADDR, 0x01)
-		time.sleep(0.05)
+		time.sleep(0.1)
+		Device_State = 1
+	if relays[setting - 1] == 0:
+		print(setting)
 		bus.write_byte(RELAY_ADDR, setting)
-		time.sleep(0.05)
+		time.sleep(0.1)
 	return 1
 
 def AllRelayOff():
@@ -161,9 +165,13 @@ def CheckRelay():
 def CheckSchedule():
 	global GoalRH
 	global RH
+	global ScheduleState
 	global Schedule
-	currentDayTime = time.localtime(time.time())
+	global ManualState
+	if Schedule == null:
+			return
 
+	currentDayTime = time.localtime(time.time())
 	today = currentDayTime[6]
 	currentHour = currentDayTime[3]
 	currentMinute = currentDayTime[4]
@@ -174,14 +182,10 @@ def CheckSchedule():
 	for i in range(len(Schedule[days[today]][0])):
 		startTime = Schedule[days[today]][i]["startTime"]
 		endTime = Schedule[days[today]][i]["endTime"]
-		if z >= startTime and z <= endTime:
-			GetRhTemp()
-			if RH < GoalRH:
-				DeviceOff()
-			else:
-				DeviceOn()
+		if z >= startTime and z <= endTime and ManualState = 0:
+			ScheduleState = 1
 		else:
-			DeviceOff()
+			ScheduleState = 0
 
 def ReadTxt(txt):
 	fileTemp = open(txt,'r')
@@ -198,8 +202,8 @@ def WriteTxt(txt, str):
 #Socket.IO event listeners
 @sio.on('schedule-to-pi')
 def on_schedule(data):
-        ''' Do some stuff '''
-
+        global Schedule
+		Schedule = data
 @sio.on('power-status-and-humidity-Setting-to-pi')
 def on_powerStatusHumidity(data):
         ''' Do some stuff '''
@@ -219,10 +223,13 @@ def MainLoop():
 	global Temp
 	global Device_State
 	global GoalRH
+	global ScheduleState
+
 	Device_State = 0
 	fullTime = 0
 	emptyTime = 0
 	DeviceOff()
+
 	while True:
 		#Read and handle Server
 
@@ -232,14 +239,20 @@ def MainLoop():
 		print('Humidity, Temp, Water')
 		print(RH, Temp, water)
 
-		#Handle
-		if RH < (GoalRH - 3) and Device_State == 0: #wont turn back on until under threashold
+		if not CheckSchedule():
+			ScheduleState = 0
+		
+		elif (RH < (GoalRH - 2) and ScheduleState = 1) or Device_State = 1:
 			SetPwrLvl()
-		elif RH > (GoalRH + 1): #Off when Humidity hits under threashold
+		elif RH > GoalRH:
 			DeviceOff()
-		elif  Device_State == 1: #updates pwr lvl while humidifier is on
-			SetPwrLvl()
-		#CheckSchedule()
+
+		#Handle
+		if water == 100:
+			fullTime = time.clock_gettime
+		elif water < 25:
+			#notify server
+			emptyTime = time.clock_gettime
 
 		#send data to server
 
