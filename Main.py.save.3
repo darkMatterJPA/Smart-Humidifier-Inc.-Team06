@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import smbus
 import time
@@ -201,26 +200,22 @@ def WriteTxt(txt, str):
 	return 1
 
 #Socket.IO event listeners
-#@sio.on('schedule-to-pi')
-#def on_schedule(data):
-#	global Schedule
-#	Schedule = data
+@sio.on('schedule-to-pi')
+def on_schedule(data):
+	global Schedule
+	Schedule = data
 
 #@sio.on('power-status-to-pi')
 #@sio.on('powerStatusToPi')
+#def on_powerStatusToPi(data):
 @sio.event
 def powerStatusToPi(data):
 	print('inPowerFunc', data)
-	global ManualState
 	if data['power'] == 'On':
+		global ManualState
 		print('Message Recieved')
 		SetPwrLvl()
 		ManualState = 1
-	if data['power'] == 'Off':
-                DeviceOff()
-                ManualState = 0
-#def on_powerStatusToPi(data):
-
 @sio.event
 def connect():
 	print('Connected To Server')
@@ -253,7 +248,7 @@ def MainLoop():
 		
 		if (RH < (GoalRH - 2) and ScheduleState == 1) or Device_State == 1 or ManualState == 1:
 			SetPwrLvl()
-		elif RH > GoalRH or (ManualState == 0 and ScheduleState == 0):
+		elif RH > GoalRH:
 			DeviceOff()
 
 		#Handle
@@ -269,7 +264,7 @@ def MainLoop():
 		y = json.dumps(jWater)
 		z = json.dumps(jRh)
 		sio.emit('waterLevel-from-pi',y)
-		sio.emit('humidityLevel-from-pi', z)
+		sio.emit('humidity-from-pi', z)
 		time.sleep(1)
 
 MainLoop()
