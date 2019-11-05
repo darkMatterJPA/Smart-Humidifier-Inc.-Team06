@@ -12,17 +12,20 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URISyntaxException;
 
 public class Humidifier extends Service {
     // Binder given to clients
-    private IBinder binder = new LocalBinder();
+     IBinder binder = new LocalBinder();
 
-    protected String powerStatous;
-    protected String humidityLevel;
-    protected String schedule;
-    protected String actualHumidity;
-    protected String waterLevel;
+     String powerStatus;
+     String humidityLevel; // make arraylist
+     Schedule schedule;
+     String actualHumidity;
+     String waterLevel; // make arraylist
 
     protected Socket mSocket;
 
@@ -33,52 +36,59 @@ public class Humidifier extends Service {
         }
     }
 
+    public JSONObject getHumidityLevel() throws JSONException {
+
+        JSONObject obj = new JSONObject();
+        obj.put("HumidityLevel", powerStatus);
+
+        return obj;
+    }
+
+
+    public JSONObject getPowerStatus() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("power", powerStatus);
+
+        return obj;
+    }
+
+//    public JSONObject getPowerStatous() throws JSONException {
+//        JSONObject obj = new JSONObject();
+//        obj.put("power", powerStatous);
+//
+//        return obj;
+//    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
 
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
                // mSocket.emit("foo", "hi");
-               // mSocket.disconnect();
-            }
-
-        }).on("waterLevel-to-app", new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
-            }
-
-        }).on("humidityLevel-to-app", new Emitter.Listener() {
-
-            @Override
-            public void call(Object... args) {
+               // Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
             }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
+
             }
 
         });
         mSocket.connect();
-        if (mSocket.connected()) {
-            Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
-        }
 
     }
+
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
-    }
-
-    public Humidifier getService() {
-        return Humidifier.this;
     }
 
 
@@ -87,6 +97,9 @@ public class Humidifier extends Service {
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
+        public LocalBinder(){
+
+        }
          Humidifier getService() {
             // Return this instance of LocalService so clients can call public methods
             return Humidifier.this;

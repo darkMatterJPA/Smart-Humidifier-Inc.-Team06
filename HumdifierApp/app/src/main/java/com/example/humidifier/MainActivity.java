@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,16 +20,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.net.URISyntaxException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    //
+    Humidifier humidifier;
+    boolean mServiceBound = false;
 
 
     // initiate a Switch
@@ -38,16 +43,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     String spinValue;
 
-    Humidifier humidifier;
+    TextView actualHumidityTextView;
+    TextView waterLevelTextView;
 
-//    private Socket mSocket;
-//
-//    {
-//        try {
-//            mSocket = IO.socket("https://polar-meadow-51053.herokuapp.com/");
-//        } catch (URISyntaxException e) {
-//        }
-//    }
+
+
 
 
     @Override
@@ -55,6 +55,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        actualHumidityTextView = findViewById(R.id.actualHumidityTextView);
+        waterLevelTextView = findViewById(R.id.waterLevelTextView);
+
+
+        if(mServiceBound) {
+            humidifier.mSocket.on("waterLevel-to-app", new Emitter.Listener() {
+
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        waterLevelTextView.setText(data.getString(" "));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }).on("humidityLevel-to-app", new Emitter.Listener() {
+
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+
+                        actualHumidityTextView.setText(data.getString(" "));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        }
 
 
 
@@ -122,7 +156,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         simpleSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                simpleSwitch.getText();
+                if(mServiceBound) {
+                    if(simpleSwitch.isChecked())
+                    {
+                        humidifier.powerStatus = "On";
+                    }
+                    else{
+                        humidifier.powerStatus = "Off";
+                    }
+                    try {
+                        humidifier.mSocket.emit("power-status-from-app", humidifier.getPowerStatus());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -131,9 +178,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         spinValue = parent.getItemAtPosition(position).toString();
-
+            String item = spinValue;
         // Showing selected spinner item
+        if(mServiceBound) {
+            humidifier.humidityLevel = item;
+            try {
+                humidifier.mSocket.emit("humidity-Setting-from-app", humidifier.getHumidityLevel());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         // Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -146,39 +202,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        // Bind to LocalService
-//        Intent intent = new Intent(this, Humidifier.class);
-//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        unbindService(connection);
-//       //  = false;
-//    }
-//
-//    /**
-//     * Defines callbacks for service binding, passed to bindService()
-//     */
-//    private final ServiceConnection connection = new ServiceConnection() {
-//
-//        @Override
-//        public void onServiceConnected(ComponentName className, IBinder service) {
-//            // We've bound to LocalService, cast the IBinder and get LocalService instance
-//            Humidifier binder = (Humidifier) service;
-//            humidifier = binder.getService();
-//            //mBound = true;
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName arg0) {
-//            //mBound = false;
-//        }
-//    };
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, Humidifier.class);
+        startService(intent);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(connection);
+        mServiceBound  = false;
+    }
+
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private final ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
+            humidifier = binder.getService();
+            mServiceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mServiceBound = false;
+        }
+    };
 
 }
 

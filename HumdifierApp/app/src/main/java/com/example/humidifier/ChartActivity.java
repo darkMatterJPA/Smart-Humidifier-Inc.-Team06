@@ -30,7 +30,7 @@ public class ChartActivity extends AppCompatActivity {
 
        // https://github.com/jjoe64/GraphView/wiki/Bar-Graph
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, -1),
+                new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
