@@ -45,29 +45,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     TextView actualHumidityTextView;
     TextView waterLevelTextView;
+    ServiceConnection connection;
 
 
 
     /**
      * Defines callbacks for service binding, passed to bindService()
      */
-    private final ServiceConnection connection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
-            humidifier = binder.getService();
-            mServiceBound = true;
-
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mServiceBound = false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +62,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actualHumidityTextView = findViewById(R.id.actualHumidityTextView);
         waterLevelTextView = findViewById(R.id.waterLevelTextView);
 
-        if(mServiceBound) {
-            if(humidifier.mSocket.connected()){
-                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+        connection = new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                // We've bound to LocalService, cast the IBinder and get LocalService instance
+                Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
+                humidifier = binder.getService();
+                mServiceBound = true;
+
+                Intent intent = new Intent(this, Humidifier.class);
+                startService(intent);
+                bindService(intent, connection, Context.BIND_AUTO_CREATE);
+                bindService(new Intent(
+                                this, Humidifier.class),
+                        connection, BIND_AUTO_CREATE);
+
+
             }
-        }
+
+            @Override
+            public void onServiceDisconnected(ComponentName arg0) {
+                mServiceBound = false;
+            }
+        };
 
       //  if(mServiceBound) {
         try {
@@ -241,9 +245,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onStart() {
         super.onStart();
         // Bind to LocalService
-        Intent intent = new Intent(this, Humidifier.class);
-        startService(intent);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//        Intent intent = new Intent(this, Humidifier.class);
+//        startService(intent);
+        //bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
 
     }

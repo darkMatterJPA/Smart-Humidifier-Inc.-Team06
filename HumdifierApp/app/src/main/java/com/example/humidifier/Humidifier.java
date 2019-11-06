@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
-public class Humidifier extends Service {
+public class Humidifier extends Service implements BmService {
     // Binder given to clients
      IBinder binder = new LocalBinder();
 
