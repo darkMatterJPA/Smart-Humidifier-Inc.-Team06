@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python3
 import smbus
 import time
@@ -186,11 +188,6 @@ def CheckSchedule():
 			ScheduleState = 1
 		else:
 			ScheduleState = 0
-def CheckError():
-	global RH
-	global Device_State
-	
-
 
 def ReadTxt(txt):
 	fileTemp = open(txt,'r')
@@ -226,16 +223,6 @@ def powerStatusToPi(data):
 #def on_powerStatusToPi(data):
 
 @sio.event
-def humiditySettingToPi(data):
-	global GoalRH
-	GoalRH = data['Humidity']
-
-@sio.event
-def scheduleToPi(data):
-	global Schedule
-	Schedule = data
-
-@sio.event
 def connect():
 	print('Connected To Server')
 
@@ -251,66 +238,46 @@ def MainLoop():
 	global GoalRH
 	global ScheduleState
 	global ManualState
-	oldTime = 0
-	oldWaterTime = 0
 	Device_State = 0
 	fullTime = 0
 	emptyTime = 0
 	DeviceOff()
-	waterFlag75 = 0
-	waterFlag50 = 0
-	waterFlag25 = 0
 	while True:
-		#Read Hardware#####
+		#Read Hardware
 		GetRhTemp()
 		water = GetWater()
+		print('Humidity, Temp, Water')
+		print(RH, Temp, water)
 
 		if not CheckSchedule():
 			ScheduleState = 0
+		
 		if (RH < (GoalRH - 2) and ScheduleState == 1) or Device_State == 1 or ManualState == 1:
 			SetPwrLvl()
 		elif RH > GoalRH or (ManualState == 0 and ScheduleState == 0):
 			DeviceOff()
-		#Handle###########
 
-		#Water level Handling
+		#Handle
 		if water == 100:
-			waterFlag75 = 0
-			waterFlag50 = 0
-			waterFlag25 = 0
-		elif water == 75 or water == 50:
-			jWater = {"WaterLevel": water}
-			z = json.dumps(jWater)
-			sio.emit('waterLvl-Warning', z)
-			if water == 50:
-				waterFlag50 = 1
-			else:
-				waterFlag75 = 1
-		elif water == 25:
-			newTime = time.time()
-			if(newTime - oldWaterTime) >= (30 * 60) or waterFlag25 == 0:
-				message = {"Waterlvl": "Water level under 25%"}
-				jm = json.dumps(message)
-				sio.emit('refill-flag', jm)
-				waterFlag25 = 1
-				oldWaterTime = time.time()
-
-		#Error Handling
-		#CheckError()
-
+			fullTime = time.clock_gettime
+		elif water < 25:
+			#notify server
+			emptyTime = time.clock_gettime
 		newRH = "%.2f" % RH
 		print(newRH)
-
-		#send data to server#####
-		newTime = time.time()
-		if((newTime - oldTime) >= 120):
+		#send data to server
+		oldTime = 0
+		newTime = time.clock(
+)
+		if((newTime - oldTime) >= 10 ):
 			jWater = {"WaterLevel": water}
 			jRh = {"Humidity": newRH}
 			y = json.dumps(jWater)
 			z = json.dumps(jRh)
 			sio.emit('waterLevel-from-pi',y)
 			sio.emit('humidityLevel-from-pi', z)
-			oldTime = time.time()
+			oldTime = time.clock()
+			print("inloop")
 		time.sleep(1)
 
 MainLoop()
