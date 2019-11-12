@@ -45,9 +45,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     TextView actualHumidityTextView;
     TextView waterLevelTextView;
+    ServiceConnection connection;
 
 
 
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
 
 
     @Override
@@ -58,8 +62,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actualHumidityTextView = findViewById(R.id.actualHumidityTextView);
         waterLevelTextView = findViewById(R.id.waterLevelTextView);
 
+        connection = new ServiceConnection() {
 
-        if(mServiceBound) {
+            @Override
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                // We've bound to LocalService, cast the IBinder and get LocalService instance
+                Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
+                humidifier = binder.getService();
+                mServiceBound = true;
+
+                Intent intent = new Intent(this, Humidifier.class);
+                startService(intent);
+                bindService(intent, connection, Context.BIND_AUTO_CREATE);
+                bindService(new Intent(
+                                this, Humidifier.class),
+                        connection, BIND_AUTO_CREATE);
+
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName arg0) {
+                mServiceBound = false;
+            }
+        };
+
+      //  if(mServiceBound) {
+        try {
             humidifier.mSocket.on("waterLevel-to-app", new Emitter.Listener() {
 
                 @Override
@@ -67,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     JSONObject data = (JSONObject) args[0];
 
                     try {
-                        waterLevelTextView.setText(data.getString(" "));
+                        waterLevelTextView.setText(data.getString("WaterLevel"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -88,7 +117,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
             });
+        } catch (Exception e)
+        {
+            e.printStackTrace();
         }
+        //}
 
 
 
@@ -157,15 +190,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
                 if(mServiceBound) {
+                    if(humidifier.mSocket.connected()){
+                        Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+                    }
                     if(simpleSwitch.isChecked())
                     {
                         humidifier.powerStatus = "On";
+//                        Toast.makeText(getApplicationContext(), "On", Toast.LENGTH_LONG).show();
                     }
                     else{
                         humidifier.powerStatus = "Off";
+//                        Toast.makeText(getApplicationContext(), "off", Toast.LENGTH_LONG).show();
                     }
                     try {
                         humidifier.mSocket.emit("power-status-from-app", humidifier.getPowerStatus());
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -206,9 +245,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onStart() {
         super.onStart();
         // Bind to LocalService
-        Intent intent = new Intent(this, Humidifier.class);
-        startService(intent);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//        Intent intent = new Intent(this, Humidifier.class);
+//        startService(intent);
+        //bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -218,24 +259,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mServiceBound  = false;
     }
 
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private final ServiceConnection connection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
-            humidifier = binder.getService();
-            mServiceBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mServiceBound = false;
-        }
-    };
 
 }
 
