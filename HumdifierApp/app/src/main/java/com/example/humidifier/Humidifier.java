@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
-public class Humidifier extends Service implements BmService {
+public class Humidifier extends Service{
     // Binder given to clients
      IBinder binder = new LocalBinder();
 
@@ -53,12 +53,7 @@ public class Humidifier extends Service implements BmService {
         return obj;
     }
 
-//    public JSONObject getPowerStatous() throws JSONException {
-//        JSONObject obj = new JSONObject();
-//        obj.put("power", powerStatous);
-//
-//        return obj;
-//    }
+
 
     @Override
     public void onCreate() {
@@ -84,9 +79,10 @@ public class Humidifier extends Service implements BmService {
 
             @Override
             public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
-
+               // System.out.println("thing-waterLevel-to-app");
                 try {
+               JSONObject data = new JSONObject((String) args[0]);
+
                     waterLevel = data.getString("WaterLevel");
 
                     Intent intent = new Intent("WaterLevel");
@@ -101,11 +97,12 @@ public class Humidifier extends Service implements BmService {
 
             @Override
             public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
+                //System.out.println("thing-humidityLevel-to-app");
 
                 try {
+                    JSONObject data = new JSONObject((String) args[0]);
 
-                    humidityLevel = data.getString("humidityLevel");
+                    humidityLevel = data.getString("Humidity");
 
                     Intent intent = new Intent("humidityLevel");
                     intent.putExtra("humidityLevel", humidityLevel);

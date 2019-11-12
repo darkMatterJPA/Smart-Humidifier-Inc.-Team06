@@ -48,14 +48,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     TextView actualHumidityTextView;
     TextView waterLevelTextView;
-    ServiceConnection connection;
 
 
 
     /**
      * Defines callbacks for service binding, passed to bindService()
      */
+    private final ServiceConnection connection = new ServiceConnection() {
 
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
+            humidifier = binder.getService();
+            mServiceBound = true;
 
         }
 
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if(humidifier.mSocket.connected()){
                 Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
             }
+        }
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<String> categories = new ArrayList<String>();
         categories.add("25%");
         categories.add("50%");
-        categories.add("75% ");
+        categories.add("75%");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -196,9 +203,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onStart() {
         super.onStart();
         // Bind to LocalService
-//        Intent intent = new Intent(this, Humidifier.class);
-//        startService(intent);
-        //bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, Humidifier.class);
+        startService(intent);
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
 
     }
