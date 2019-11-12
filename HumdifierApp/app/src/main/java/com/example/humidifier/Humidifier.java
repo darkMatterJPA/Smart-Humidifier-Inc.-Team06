@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -79,12 +80,50 @@ public class Humidifier extends Service implements BmService {
 
             }
 
+        }).on("waterLevel-to-app", new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+
+                try {
+                    waterLevel = data.getString("WaterLevel");
+
+                    Intent intent = new Intent("WaterLevel");
+                    intent.putExtra("WaterLevel", waterLevel);
+                    sendIntent(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).on("humidityLevel-to-app", new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+
+                try {
+
+                    humidityLevel = data.getString("humidityLevel");
+
+                    Intent intent = new Intent("humidityLevel");
+                    intent.putExtra("humidityLevel", humidityLevel);
+                    sendIntent(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
         mSocket.connect();
 
     }
 
 
+    private void sendIntent(Intent intent){
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

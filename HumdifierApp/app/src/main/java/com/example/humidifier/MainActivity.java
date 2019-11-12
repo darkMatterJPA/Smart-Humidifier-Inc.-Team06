@@ -1,8 +1,10 @@
 package com.example.humidifier;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 import com.github.nkzawa.emitter.Emitter;
@@ -54,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
 
 
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mServiceBound = false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,67 +73,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actualHumidityTextView = findViewById(R.id.actualHumidityTextView);
         waterLevelTextView = findViewById(R.id.waterLevelTextView);
 
-        connection = new ServiceConnection() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                waterLevelMessageReceiver, new IntentFilter("WaterLevel"));
 
-            @Override
-            public void onServiceConnected(ComponentName className, IBinder service) {
-                // We've bound to LocalService, cast the IBinder and get LocalService instance
-                Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
-                humidifier = binder.getService();
-                mServiceBound = true;
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                humidityLevelMessageReceiver, new IntentFilter("humidityLevel"));
 
-                Intent intent = new Intent(this, Humidifier.class);
-                startService(intent);
-                bindService(intent, connection, Context.BIND_AUTO_CREATE);
-                bindService(new Intent(
-                                this, Humidifier.class),
-                        connection, BIND_AUTO_CREATE);
-
-
+        if(mServiceBound) {
+            if(humidifier.mSocket.connected()){
+                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
             }
-
-            @Override
-            public void onServiceDisconnected(ComponentName arg0) {
-                mServiceBound = false;
-            }
-        };
-
-      //  if(mServiceBound) {
-        try {
-            humidifier.mSocket.on("waterLevel-to-app", new Emitter.Listener() {
-
-                @Override
-                public void call(Object... args) {
-                    JSONObject data = (JSONObject) args[0];
-
-                    try {
-                        waterLevelTextView.setText(data.getString("WaterLevel"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }).on("humidityLevel-to-app", new Emitter.Listener() {
-
-                @Override
-                public void call(Object... args) {
-                    JSONObject data = (JSONObject) args[0];
-
-                    try {
-
-                        actualHumidityTextView.setText(data.getString(" "));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            });
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        //}
-
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -176,15 +136,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spin.setAdapter(dataAdapter);
 
 
-        // Button bt1 = findViewById(R.id.schedButton);
-        //bt1.setOnClickListener(new View.OnClickListener() {
-
-        //   @Override
-
-        // public void onClick(View view) {
-        //   startSchedule();
-        //}
-        //});
 
         simpleSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,7 +211,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+    private BroadcastReceiver waterLevelMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            waterLevelTextView.setText(intent.getStringExtra("WaterLevel"));
+        }
+    };
 
+    private BroadcastReceiver humidityLevelMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            actualHumidityTextView.setText(intent.getStringExtra("humidityLevel"));
+        }
+    };
 }
 
 
