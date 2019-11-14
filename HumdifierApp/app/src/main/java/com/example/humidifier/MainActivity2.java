@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +149,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                         humidifier.schedule.Saturday.add(new Schedule.startStop(start,end,level));
                     }
 
+//                    Intent intent = new Intent("schedule");
+//                    intent.putExtra("schedule", humidifier.schedule.toString());
+//                    sendIntent(intent);
+
                     Intent schedActivityIntent = new Intent(getApplicationContext(), UserScheduleActivity.class);
                     startActivity(schedActivityIntent);
                 }
@@ -193,5 +198,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
+
+//
+//    private void sendIntent(Intent intent){
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//    }
 
 }

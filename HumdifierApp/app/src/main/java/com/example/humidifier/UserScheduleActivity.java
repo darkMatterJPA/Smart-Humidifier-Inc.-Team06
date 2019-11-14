@@ -2,10 +2,13 @@ package com.example.humidifier;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,12 +23,16 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserScheduleActivity extends AppCompatActivity {
 
     Humidifier humidifier;
     boolean mServiceBound = false;
     private Button deleteAll;
     private Button add;
+    private Button refresh;
     TextView schedule;
 
     /**
@@ -72,20 +79,36 @@ public class UserScheduleActivity extends AppCompatActivity {
         mServiceBound  = false;
     }
 
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_schedule);
 
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                MessageReceiver, new IntentFilter("schedule"));
+
+        refresh = this.findViewById(R.id.refresh);
         deleteAll = this.findViewById(R.id.delete);
         add = this.findViewById(R.id.add);
 
         schedule = this.findViewById(R.id.schedule);
 
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mServiceBound)
+                {
+                    schedule.setText(humidifier.schedule.toString());
+
+                    humidifier.mSocket.emit("schedule-from-app", humidifier.schedule.getJsonSchedule());
+                }
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,13 +118,12 @@ public class UserScheduleActivity extends AppCompatActivity {
         });
 
         deleteAll.setOnClickListener(new View.OnClickListener() {
-
+            @Override
             public void onClick(View v){
-                //humidifier.schedule.deleteAll();
-                if (mServiceBound)
-                {
-                    schedule.setText(humidifier.schedule.toString());
+                if(mServiceBound){
+                    humidifier.schedule.deleteAll();
                 }
+
             }
         });
 
@@ -131,4 +153,13 @@ public class UserScheduleActivity extends AppCompatActivity {
         });
 
     }
+
+    //did not work
+//    private BroadcastReceiver MessageReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            schedule.setText(intent.getStringExtra("schedule"));
+//
+//        }
+//    };
 }

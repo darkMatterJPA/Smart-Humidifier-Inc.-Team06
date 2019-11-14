@@ -8,17 +8,28 @@
     tools:context=".UserScheduleActivity">
 
     <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/Bluepurple"
+        android:text="refresh"
+        android:textColor="@color/bpWhite"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="75dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="Add New"
         android:textColor="@color/bpWhite"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,8 +37,8 @@
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="28dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="delete all"
         android:textColor="@color/bpWhite"
@@ -55,7 +66,7 @@
         android:id="@+id/schedule"
         android:layout_width="389dp"
         android:layout_height="508dp"
-        android:text="TextView"
+        android:text="Click refresh to refresh the view"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

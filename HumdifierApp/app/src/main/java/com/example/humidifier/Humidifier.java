@@ -26,7 +26,7 @@ public class Humidifier extends Service{
      String humidityLevel; // make arraylist
      Schedule schedule = new Schedule();
      String actualHumidity;
-     String waterLevel; // make arraylist
+     String waterLevel;
 
     protected Socket mSocket;
 

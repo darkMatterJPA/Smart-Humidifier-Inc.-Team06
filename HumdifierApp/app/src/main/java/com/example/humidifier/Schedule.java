@@ -3,6 +3,7 @@ package com.example.humidifier;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,21 @@ public class Schedule {
         @Override
         public String toString() {
             return "Start: "+start+", Stop: "+stop+", Humidity Level: "+humidityLevel;
+        }
+
+        public JSONObject toJSONObj()
+        {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("startTime",start);
+                obj.put("endTime", start);
+                obj.put("humidityLevel", humidityLevel);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            return obj;
         }
     }
 
@@ -53,6 +69,52 @@ public class Schedule {
     public JSONObject getJsonSchedule (){
         JSONObject obj = new JSONObject();
 
+        JSONArray mArr = new JSONArray();
+        for(Schedule.startStop i : Monday){
+            mArr.put(i.toJSONObj());
+        }
+
+        JSONArray tArr = new JSONArray();
+        for(Schedule.startStop i : Tuesday){
+            tArr.put(i.toJSONObj());
+        }
+
+        JSONArray wArr = new JSONArray();
+        for(Schedule.startStop i : Wednesday){
+            wArr.put(i.toJSONObj());
+        }
+
+        JSONArray thArr = new JSONArray();
+        for(Schedule.startStop i : Thursday){
+            thArr.put(i.toJSONObj());
+        }
+
+        JSONArray fArr = new JSONArray();
+        for(Schedule.startStop i : Friday){
+            fArr.put(i.toJSONObj());
+        }
+
+        JSONArray sArr = new JSONArray();
+        for(Schedule.startStop i : Saturday){
+            sArr.put(i.toJSONObj());
+        }
+
+        JSONArray suArr = new JSONArray();
+        for(Schedule.startStop i : Sunday){
+            suArr.put(i.toJSONObj());
+        }
+
+        try {
+        obj.put("Monday",mArr);
+        obj.put("Tuesday",tArr);
+        obj.put("Wednesday",wArr);
+        obj.put("Thursday",thArr);
+        obj.put("Friday",fArr);
+        obj.put("Saturday",sArr);
+        obj.put("Sunday", suArr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return obj;
     }
