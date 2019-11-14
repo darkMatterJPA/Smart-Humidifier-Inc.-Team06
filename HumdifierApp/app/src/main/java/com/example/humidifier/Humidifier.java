@@ -24,7 +24,7 @@ public class Humidifier extends Service{
 
      String powerStatus;
      String humidityLevel; // make arraylist
-     Schedule schedule;
+     Schedule schedule = new Schedule();
      String actualHumidity;
      String waterLevel; // make arraylist
 

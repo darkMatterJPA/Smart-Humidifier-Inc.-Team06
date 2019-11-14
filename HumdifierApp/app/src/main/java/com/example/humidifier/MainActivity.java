@@ -85,11 +85,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 humidityLevelMessageReceiver, new IntentFilter("humidityLevel"));
 
-//        if(mServiceBound) {
-//            if(humidifier.mSocket.connected()){
-//                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
-//            }
-//        }
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);

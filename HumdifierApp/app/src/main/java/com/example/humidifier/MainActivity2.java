@@ -6,18 +6,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.widget.ToggleButton;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,14 +120,16 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
             public void onClick(View v){
                 if(mServiceBound) {
-                    String start = (Integer.toString(endTimePicker.getHour())+Integer.toString(endTimePicker.getMinute()));
+                    String start = (Integer.toString(startTimePicker.getHour())+Integer.toString(startTimePicker.getMinute()));
                     String end = (Integer.toString(endTimePicker.getHour())+Integer.toString(endTimePicker.getMinute()));
+
+
 
                     //Check individual items.
                     if(tSu.isChecked()){
                         humidifier.schedule.Sunday.add(new Schedule.startStop(start,end,level));
                     }
-                    if(tM.isChecked()){
+                    if( tM.isChecked()){
                         humidifier.schedule.Monday.add(new Schedule.startStop(start,end,level));
                     }
                     if(tT.isChecked()){
@@ -173,33 +171,6 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         // attaching data adapter to spinner
         spin.setAdapter(dataAdapter);
-
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-
-                    case R.id.action_home:
-                        Toast.makeText(MainActivity2.this, "Home", Toast.LENGTH_SHORT).show();
-                        Intent b = new Intent(MainActivity2.this, MainActivity.class);
-                        startActivity(b);
-                        break;
-                    case R.id.action_graph:
-                        Toast.makeText(MainActivity2.this, "Graph", Toast.LENGTH_SHORT).show();
-                        Intent g = new Intent(MainActivity2.this, ChartActivity.class);
-                        startActivity(g);
-                        break;
-
-                }
-                return true;
-            }
-        });
-
-
-
-
 
 
     }

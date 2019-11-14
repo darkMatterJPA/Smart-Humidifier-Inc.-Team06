@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +25,8 @@ public class UserScheduleActivity extends AppCompatActivity {
     Humidifier humidifier;
     boolean mServiceBound = false;
     private Button deleteAll;
-    EditText schedule;
+    private Button add;
+    TextView schedule;
 
     /**
      * Defines callbacks for service binding, passed to bindService()
@@ -37,6 +39,7 @@ public class UserScheduleActivity extends AppCompatActivity {
             Humidifier.LocalBinder binder = (Humidifier.LocalBinder) service;
             humidifier = binder.getService();
             mServiceBound = true;
+
 
         }
 
@@ -54,7 +57,12 @@ public class UserScheduleActivity extends AppCompatActivity {
         startService(intent);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-        schedule.setText(humidifier.schedule.toString());
+        if (mServiceBound)
+        {
+            schedule.setText(humidifier.schedule.toString());
+        }
+
+
     }
 
     @Override
@@ -74,11 +82,26 @@ public class UserScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_schedule);
 
         deleteAll = this.findViewById(R.id.delete);
+        add = this.findViewById(R.id.add);
+
+        schedule = this.findViewById(R.id.schedule);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(UserScheduleActivity.this, MainActivity2.class);
+                startActivity(a);
+            }
+        });
 
         deleteAll.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v){
-                humidifier.schedule.deleteAll();
+                //humidifier.schedule.deleteAll();
+                if (mServiceBound)
+                {
+                    schedule.setText(humidifier.schedule.toString());
+                }
             }
         });
 
