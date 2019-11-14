@@ -72,7 +72,7 @@ public class Humidifier extends Service{
 
             @Override
             public void call(Object... args) {
-
+                //
             }
 
         }).on("waterLevel-to-app", new Emitter.Listener() {
@@ -121,6 +121,7 @@ public class Humidifier extends Service{
     private void sendIntent(Intent intent){
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

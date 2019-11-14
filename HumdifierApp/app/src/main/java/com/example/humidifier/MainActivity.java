@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 humidityLevelMessageReceiver, new IntentFilter("humidityLevel"));
 
-        if(mServiceBound) {
-            if(humidifier.mSocket.connected()){
-                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
-            }
-        }
+//        if(mServiceBound) {
+//            if(humidifier.mSocket.connected()){
+//                Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+//            }
+//        }
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (item.getItemId()) {
                     case R.id.action_schedule:
                         Toast.makeText(MainActivity.this, "Schedule", Toast.LENGTH_SHORT).show();
-                        Intent a = new Intent(MainActivity.this, MainActivity2.class);
+                        Intent a = new Intent(MainActivity.this, UserScheduleActivity.class);
                         startActivity(a);
                         break;
                     case R.id.action_home:

@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserScheduleActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".UserScheduleActivity">
 
     <Button
-        android:id="@+id/edit"
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="75dp"
         android:backgroundTint="@color/Bluepurple"
-        android:text="Edit"
+        android:text="Add New"
+        android:textColor="@color/bpWhite"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/delete"
-        app:layout_constraintHorizontal_bias="0.711"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,33 +26,41 @@
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="80dp"
         android:backgroundTint="@color/Bluepurple"
-        android:text="Delete"
+        android:text="delete all"
+        android:textColor="@color/bpWhite"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/userlist"
-        android:layout_width="377dp"
-        android:layout_height="563dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.404"></ListView>
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginBottom="52dp"
-        android:backgroundTint="@color/Bluepurple"
-        android:textStyle="bold"
-        android:text="BACK TO MAIN SCHEDULE"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <EditText
+        android:id="@+id/schedule"
+        android:layout_width="380dp"
+        android:layout_height="530dp"
+        android:clickable="false"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:visibility="visible"
+        app:itemBackground="@color/Bluepurple"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

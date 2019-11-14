@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TimePicker
-        android:id="@+id/time_picker2"
+        android:id="@+id/startTimePicker"
         android:layout_width="169dp"
         android:layout_height="110dp"
         android:layout_marginTop="132dp"
@@ -26,22 +26,6 @@
         android:timePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:visibility="visible"
-        app:itemBackground="@color/Bluepurple"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        tools:visibility="visible" />
 
 
     <TextView
@@ -173,7 +157,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TimePicker
-        android:id="@+id/time_picker"
+        android:id="@+id/endTimePicker"
         android:layout_width="169dp"
         android:layout_height="110dp"
         android:layout_marginTop="280dp"
@@ -183,7 +167,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/startTime"
+        android:id="@+id/startTimeTF"
         android:layout_width="201dp"
         android:layout_height="51dp"
         android:layout_marginTop="108dp"
@@ -196,7 +180,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/endTime"
+        android:id="@+id/endTimeTF"
         android:layout_width="201dp"
         android:layout_height="51dp"
         android:layout_marginTop="252dp"
@@ -214,28 +198,28 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/savesched"
+        android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="172dp"
         android:layout_marginEnd="44dp"
         android:backgroundTint="@color/Bluepurple"
-        android:text="SAVE SCHEDULE"
-        android:textStyle="bold"
+        android:text="SAVE "
         android:textColor="@color/bpWhite"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/viewsched"
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
         android:layout_marginEnd="44dp"
         android:backgroundTint="@color/Bluepurple"
-        android:text="VIEW SCHEDULE"
-        android:textStyle="bold"
+        android:text="cancel"
         android:textColor="@color/bpWhite"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
