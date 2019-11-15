@@ -1,5 +1,7 @@
 package com.example.humidifier;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -112,6 +114,29 @@ public class Humidifier extends Service{
                 }
             }
 
+        }).on("Error-notification", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+                //Example of push notification
+//                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//                Notification notify=new Notification.Builder
+//                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
+//                        setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
+//
+//                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+//                notif.notify(0, notify);
+            }
+        }).on("warningNotification", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+            }
+        }).on("refill-notification", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+            }
         });
         mSocket.connect();
 
