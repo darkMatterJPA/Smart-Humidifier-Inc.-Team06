@@ -104,7 +104,6 @@ public class UserScheduleActivity extends AppCompatActivity {
                 if (mServiceBound)
                 {
                     schedule.setText(humidifier.schedule.toString());
-
                     humidifier.mSocket.emit("schedule-from-app", humidifier.schedule.getJsonSchedule());
                 }
             }
@@ -121,7 +120,9 @@ public class UserScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 if(mServiceBound){
+                    schedule.setText(humidifier.schedule.toString());
                     humidifier.schedule.deleteAll();
+                    humidifier.mSocket.emit("schedule-from-app", humidifier.schedule.getJsonSchedule());
                 }
 
             }
