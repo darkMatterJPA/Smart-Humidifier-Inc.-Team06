@@ -93,11 +93,11 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         //Time picker
         startTimePicker = (TimePicker) this.findViewById(R.id.startTimePicker);
-        startTimePicker.setIs24HourView(false);
+        startTimePicker.setIs24HourView(true);
 
         //Time picker
         endTimePicker = (TimePicker) this.findViewById(R.id.endTimePicker);
-        endTimePicker.setIs24HourView(false);
+        endTimePicker.setIs24HourView(true);
 
         cancelButton = findViewById(R.id.cancel);
         saveButton = findViewById(R.id.save);
@@ -122,6 +122,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View v){
                 if(mServiceBound) {
                     String start = (Integer.toString(startTimePicker.getHour())+Integer.toString(startTimePicker.getMinute()));
+                  //  startTimePicker.ge
                     String end = (Integer.toString(endTimePicker.getHour())+Integer.toString(endTimePicker.getMinute()));
 
 
