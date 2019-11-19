@@ -83,7 +83,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     TimePicker endTimePicker;
     TimePicker startTimePicker;
 
-    String level;
+    int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,9 +164,9 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("Low");
-        categories.add("Medium");
-        categories.add("High");
+        categories.add("25");
+        categories.add("50");
+        categories.add("75");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -190,7 +190,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-      level = parent.getItemAtPosition(position).toString();
+      level = Integer.parseInt(parent.getItemAtPosition(position).toString());
 
 
     }

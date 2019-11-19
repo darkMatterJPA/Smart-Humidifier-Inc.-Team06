@@ -14,9 +14,9 @@ public class Schedule {
     public static class startStop{
         String start;
         String stop;
-        String humidityLevel;
+        int humidityLevel;
 
-        public startStop(String start, String stop,String humidityLevel )
+        public startStop(String start, String stop, int humidityLevel )
         {
             this.start = start;
             this.stop = stop;

@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
-        categories.add("25%");
-        categories.add("50%");
-        categories.add("75%");
+        categories.add("25");
+        categories.add("50");
+        categories.add("75");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String item = spinValue;
         // Showing selected spinner item
         if(mServiceBound) {
-            humidifier.humidityLevel = item;
+            humidifier.humidityLevel = Integer.parseInt(item);
             try {
                 humidifier.mSocket.emit("humidity-Setting-from-app", humidifier.getHumidityLevel());
             } catch (JSONException e) {

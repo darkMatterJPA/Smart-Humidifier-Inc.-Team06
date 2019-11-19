@@ -25,7 +25,7 @@ public class Humidifier extends Service{
      IBinder binder = new LocalBinder();
 
      String powerStatus;
-     String humidityLevel; // make arraylist
+     int humidityLevel;
      Schedule schedule = new Schedule();
      String actualHumidity;
      String waterLevel;
@@ -42,7 +42,7 @@ public class Humidifier extends Service{
     public JSONObject getHumidityLevel() throws JSONException {
 
         JSONObject obj = new JSONObject();
-        obj.put("HumidityLevel", powerStatus);
+        obj.put("Humidity", humidityLevel);
 
         return obj;
     }
@@ -104,7 +104,7 @@ public class Humidifier extends Service{
                 try {
                     JSONObject data = new JSONObject((String) args[0]);
 
-                    humidityLevel = data.getString("Humidity");
+                    humidityLevel = data.getInt("Humidity");
 
                     Intent intent = new Intent("humidityLevel");
                     intent.putExtra("humidityLevel", humidityLevel);
