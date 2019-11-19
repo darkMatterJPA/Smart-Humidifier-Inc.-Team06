@@ -35,7 +35,7 @@ public class Schedule {
             JSONObject obj = new JSONObject();
             try {
                 obj.put("startTime",start);
-                obj.put("endTime", start);
+                obj.put("endTime", stop);
                 obj.put("humidityLevel", humidityLevel);
             } catch (JSONException e) {
                 e.printStackTrace();
