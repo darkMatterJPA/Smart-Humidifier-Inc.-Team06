@@ -73,10 +73,9 @@ def GetWater():
 
 def MapWater(rawWater):
 	#Constants
-	maxIn = 0x0FA0
+	maxIn = 0x0E54
 	minIn = 0x02FF
 	rangeIn = maxIn - minIn
-	print("Raw Water:",hex(rawWater))
 	maxOut = 100
 	minOut = 25
 	rangeOut = 75
@@ -132,6 +131,7 @@ def SetPwrLvl():
 		setting = medium
 	else:
 		setting = low
+
 	if(OldSetting != setting):
 		relays = CheckRelay()
 		print(relays)
@@ -278,12 +278,10 @@ def MainLoop():
 		water = GetWater()
 
 		if not CheckSchedule():
-			ScheduleState = 0
-			print("Not in Schedule State")
-		if RH < (GoalRH - 2) and (ScheduleState == 1 or ManualState == 1):
+		
+		if (RH < (GoalRH - 2) and ScheduleState == 1) or Device_State == 1 or ManualState == 1:
 			SetPwrLvl()
-			print("SetPowerLVl")
-		if RH > (GoalRH + 2) or (ManualState == 0 and ScheduleState == 0):
+		elif RH > GoalRH or (ManualState == 0 and ScheduleState == 0):
 			DeviceOff()
 		#Handle###########
 

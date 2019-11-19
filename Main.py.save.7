@@ -34,7 +34,7 @@ RELAY_ON = 15
 #RH Sensor
 sensor = Adafruit_DHT.DHT22
 pin = 23
-GoalRH = 75
+GoalRH = 26
 
 #Variables
 RH = 0
@@ -73,13 +73,13 @@ def GetWater():
 
 def MapWater(rawWater):
 	#Constants
-	maxIn = 0x0FA0
+	maxIn = 0x0950
 	minIn = 0x02FF
 	rangeIn = maxIn - minIn
-	print("Raw Water:",hex(rawWater))
 	maxOut = 100
 	minOut = 25
 	rangeOut = 75
+
 	#Calculations
 	temp = rawWater - minIn
 	if temp < 0:
@@ -115,12 +115,10 @@ def DeviceOff():
 		global Device_State
 		Device_State = 0
 
-OldSetting = 0
 def SetPwrLvl():
 	global Device_State
 	global RH
 	global GoalRH
-	global OldSetting
 	high = RelFour
 	medium = RelThree
 	low = RelTwo
@@ -132,26 +130,23 @@ def SetPwrLvl():
 		setting = medium
 	else:
 		setting = low
-	if(OldSetting != setting):
-		relays = CheckRelay()
-		print(relays)
-		if relays[setting - 1] == 0:
-			AllRelayOff()
-			bus.write_byte(RELAY_ADDR, RelOne)
-			time.sleep(0.1)
-			bus.write_byte(RELAY_ADDR, setting)
-			time.sleep(0.1)
-			Device_State = 1
-			OldSetting = setting
+
+	relays = CheckRelay()
+	print(relays)
+	if relays[0] == 0:
+		bus.write_byte(RELAY_ADDR, RelOne)
+		time.sleep(0.1)
+		Device_State = 1
+	if relays[setting - 1] == 0:
+		print(setting)
+		bus.write_byte(RELAY_ADDR, setting)
+		time.sleep(0.1)
 	return 1
 
 def AllRelayOff():
 	global TOG_ALL_OFF
-	global OldSetting
-	OldSetting = 0;
 	bus.write_byte(RELAY_ADDR, TOG_ALL_OFF)
 	time.sleep(0.1)
-	Device_State = 0
 	return 1
 
 #@return array of 4
@@ -184,18 +179,15 @@ def CheckSchedule():
 	z = int(str(currentHour)+str(currentMinute))
 
 	days = ("Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
-	print(today);
-	print(len(Schedule[days[today]]))
-	for i in range(len(Schedule[days[today]])):
-		startTime = int(Schedule[days[today]][i]["startTime"])
-		endTime = int(Schedule[days[today]][i]["endTime"])
+
+	for i in range(len(Schedule[days[today]][0])):
+		startTime = Schedule[days[today]][i]["startTime"]
+		endTime = Schedule[days[today]][i]["endTime"]
 		if z >= startTime and z <= endTime and ManualState == 0:
 			ScheduleState = 1
 			GoalRH = Schedule[days[today]][i]["humidityLevel"]
-			return 1
 		else:
 			ScheduleState = 0
-			return 0
 def CheckError():
 	global RH
 	global Device_State
@@ -238,7 +230,7 @@ def powerStatusToPi(data):
 @sio.event
 def humiditySettingToPi(data):
 	global GoalRH
-	GoalRH =int( data["Humidity"])
+	GoalRH = int(data['Humidity'])
 	print("Recieved Humidity Command")
 
 @sio.event
@@ -279,11 +271,9 @@ def MainLoop():
 
 		if not CheckSchedule():
 			ScheduleState = 0
-			print("Not in Schedule State")
-		if RH < (GoalRH - 2) and (ScheduleState == 1 or ManualState == 1):
+		if (RH < (GoalRH - 2) and ScheduleState == 1) or Device_State == 1 or ManualState == 1:
 			SetPwrLvl()
-			print("SetPowerLVl")
-		if RH > (GoalRH + 2) or (ManualState == 0 and ScheduleState == 0):
+		elif RH > GoalRH or (ManualState == 0 and ScheduleState == 0):
 			DeviceOff()
 		#Handle###########
 
@@ -315,7 +305,6 @@ def MainLoop():
 		newRH = "%.2f" % RH
 		print("Humidity:", newRH)
 		print("GoalHumidity:", GoalRH)
-		print("Water Percent", water)
 		#send data to server#####
 		newTime = time.time()
 		if((newTime - oldTime) >= 120):
