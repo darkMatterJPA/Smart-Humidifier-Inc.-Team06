@@ -1,15 +1,21 @@
 package com.example.humidifier;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -102,6 +108,7 @@ public class Humidifier extends Service{
             public void call(Object... args) {
                 System.out.println("thing-humidityLevel-to-app");
 
+
                 try {
                     JSONObject data = new JSONObject((String) args[0]);
 
@@ -116,43 +123,31 @@ public class Humidifier extends Service{
             }
 
         }).on("Error-notification", new Emitter.Listener() {
+
+
             @Override
             public void call(Object... args) {
+                System.out.println("thing-Error-notification");
+                notificationDialog("Error","Error Something is Wrong");
 
-                //Example of push notification
-                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-                Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle("Error").setContentText("Error Something is Wrong").
-                        setContentTitle("Error").setSmallIcon(R.drawable.waterdrop).build();
-
-                notify.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.notify(0, notify);
             }
 
         }).on("warningNotification", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-                Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle("Low Water Level").setContentText("Low Water Level Refill soon.").
-                        setContentTitle("Low Water Level").setSmallIcon(R.drawable.waterdrop).build();
+                System.out.println("thing-warningNotification");
 
-                notify.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.notify(0, notify);
+                notificationDialog("Low Water Level","Low Water Level Refill soon.");
+
+
             }
         }).on("refill-notification", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationDialog("Refill Water Tank","Low Water Level Please Refill Water Tank NOW!!!");
 
-                Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle("Refill Water tank").setContentText("Please Refill Water Tank").
-                        setContentTitle("Refill Water tank").setSmallIcon(R.drawable.waterdrop).build();
-
-                notify.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.notify(0, notify);
+                System.out.println("thing-refill-notification");
             }
         });
         mSocket.connect();
@@ -183,5 +178,22 @@ public class Humidifier extends Service{
             // Return this instance of LocalService so clients can call public methods
             return Humidifier.this;
         }
+    }
+
+
+   // @RequiresApi(api = Build.VERSION_CODES.O)
+    private void notificationDialog(String x, String y) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "tutorialspoint_01";
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.waterdrop)
+                .setContentTitle(x)
+                .setContentText(y)
+                .setContentInfo("Information");
+        notificationManager.notify(1, notificationBuilder.build());
     }
 }
