@@ -133,12 +133,26 @@ public class Humidifier extends Service{
         }).on("warningNotification", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
+                Notification notify=new Notification.Builder
+                        (getApplicationContext()).setContentTitle("Low Water Level").setContentText("Low Water Level Refill soon.").
+                        setContentTitle("Low Water Level").build();
+
+                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+                notif.notify(0, notify);
             }
         }).on("refill-notification", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
+                Notification notify=new Notification.Builder
+                        (getApplicationContext()).setContentTitle("Refill Water tank").setContentText("Please Refill Water Tank").
+                        setContentTitle("Refill Water tank").setSmallIcon(R.drawable).build();
+
+                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+                notif.notify(0, notify);
             }
         });
         mSocket.connect();
