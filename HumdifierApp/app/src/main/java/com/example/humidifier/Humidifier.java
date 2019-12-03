@@ -122,9 +122,9 @@ public class Humidifier extends Service{
                 //Example of push notification
                // NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-               //Notification notify=new Notification.Builder
-                 //       (getApplicationContext()).setContentTitle(tittle).setContentText(body).
-                   //     setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
+                Notification notify=new Notification.Builder
+                        (getApplicationContext()).setContentTitle("Error").setContentText("Error Something is Wrong").
+                        setContentTitle("Error").setSmallIcon(R.drawable.waterdrop).build();
 
                 //notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 //notif.notify(0, notify);
@@ -137,7 +137,7 @@ public class Humidifier extends Service{
 
                 Notification notify=new Notification.Builder
                         (getApplicationContext()).setContentTitle("Low Water Level").setContentText("Low Water Level Refill soon.").
-                        setContentTitle("Low Water Level").build();
+                        setContentTitle("Low Water Level").setSmallIcon(R.drawable.waterdrop).build();
 
                 notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 notif.notify(0, notify);
@@ -149,7 +149,7 @@ public class Humidifier extends Service{
 
                 Notification notify=new Notification.Builder
                         (getApplicationContext()).setContentTitle("Refill Water tank").setContentText("Please Refill Water Tank").
-                        setContentTitle("Refill Water tank").setSmallIcon(R.drawable).build();
+                        setContentTitle("Refill Water tank").setSmallIcon(R.drawable.waterdrop).build();
 
                 notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 notif.notify(0, notify);
