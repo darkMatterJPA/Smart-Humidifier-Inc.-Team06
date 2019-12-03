@@ -3,6 +3,7 @@ package com.example.humidifier;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -81,7 +82,7 @@ public class Humidifier extends Service{
 
             @Override
             public void call(Object... args) {
-               // System.out.println("thing-waterLevel-to-app");
+                System.out.println("thing-waterLevel-to-app");
                 try {
                JSONObject data = new JSONObject((String) args[0]);
 
@@ -99,15 +100,15 @@ public class Humidifier extends Service{
 
             @Override
             public void call(Object... args) {
-                //System.out.println("thing-humidityLevel-to-app");
+                System.out.println("thing-humidityLevel-to-app");
 
                 try {
                     JSONObject data = new JSONObject((String) args[0]);
 
-                    humidityLevel = data.getInt("Humidity");
+                    actualHumidity = data.getString("Humidity");
 
                     Intent intent = new Intent("humidityLevel");
-                    intent.putExtra("humidityLevel", humidityLevel);
+                    intent.putExtra("humidityLevel", actualHumidity);
                     sendIntent(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -119,13 +120,14 @@ public class Humidifier extends Service{
             public void call(Object... args) {
 
                 //Example of push notification
-//                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//                Notification notify=new Notification.Builder
-//                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
-//                        setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
-//
-//                notify.flags |= Notification.FLAG_AUTO_CANCEL;
-//                notif.notify(0, notify);
+                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+                Notification notify=new Notification.Builder
+                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
+                        setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
+
+                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+                notif.notify(0, notify);
             }
         }).on("warningNotification", new Emitter.Listener() {
             @Override

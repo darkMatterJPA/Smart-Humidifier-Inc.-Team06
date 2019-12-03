@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onReceive(Context context, Intent intent) {
             waterLevelTextView.setText(intent.getStringExtra("WaterLevel"));
+            System.out.println("thing-waterLevelMessageReceiver: "+intent.getStringExtra("WaterLevel"));
         }
     };
 
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onReceive(Context context, Intent intent) {
             actualHumidityTextView.setText(intent.getStringExtra("humidityLevel"));
+            System.out.println("thing-humidityLevelMessageReceiver: "+intent.getStringExtra("humidityLevel"));
         }
     };
 }
