@@ -166,7 +166,15 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add("25");
+        categories.add("30");
+        categories.add("35");
+        categories.add("40");
+        categories.add("45");
         categories.add("50");
+        categories.add("55");
+        categories.add("60");
+        categories.add("65");
+        categories.add("70");
         categories.add("75");
 
         // Creating adapter for spinner
