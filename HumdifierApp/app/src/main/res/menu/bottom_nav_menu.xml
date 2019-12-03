@@ -16,11 +16,6 @@
         android:icon="@drawable/home"
         android:title="Home"/>
 
-    <item
-        android:id="@+id/action_graph"
-        android:enabled="true"
-        android:icon="@drawable/graph"
-        android:title="Graph"
-        />
+
 
 </menu>

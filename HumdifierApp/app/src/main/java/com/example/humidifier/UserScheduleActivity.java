@@ -142,11 +142,6 @@ public class UserScheduleActivity extends AppCompatActivity {
                         Intent a = new Intent(UserScheduleActivity.this, MainActivity.class);
                         startActivity(a);
                         break;
-                    case R.id.action_graph:
-                        Toast.makeText(UserScheduleActivity.this, "Graph", Toast.LENGTH_SHORT).show();
-                        Intent g = new Intent(UserScheduleActivity.this, ChartActivity.class);
-                        startActivity(g);
-                        break;
 
                 }
                 return true;

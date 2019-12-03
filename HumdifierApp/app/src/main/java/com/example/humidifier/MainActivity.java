@@ -100,11 +100,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case R.id.action_home:
                         Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.action_graph:
-                        Toast.makeText(MainActivity.this, "Graph", Toast.LENGTH_SHORT).show();
-                        Intent g = new Intent(MainActivity.this, ChartActivity.class);
-                        startActivity(g);
-                        break;
+
 
                 }
                 return true;

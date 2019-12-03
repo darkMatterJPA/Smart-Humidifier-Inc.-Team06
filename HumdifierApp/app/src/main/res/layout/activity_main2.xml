@@ -205,7 +205,7 @@
         android:layout_marginEnd="44dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="SAVE "
-        android:textColor="@color/bpWhite"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -218,7 +218,7 @@
         android:layout_marginEnd="44dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="cancel"
-        android:textColor="@color/bpWhite"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

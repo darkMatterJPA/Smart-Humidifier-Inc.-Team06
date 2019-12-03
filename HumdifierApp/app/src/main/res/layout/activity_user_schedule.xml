@@ -15,7 +15,7 @@
         android:layout_marginTop="28dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="refresh"
-        android:textColor="@color/bpWhite"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/delete"
         app:layout_constraintHorizontal_bias="0.021"
@@ -30,7 +30,7 @@
         android:layout_marginTop="28dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="Add New"
-        android:textColor="@color/bpWhite"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
         android:layout_marginEnd="28dp"
         android:backgroundTint="@color/Bluepurple"
         android:text="Delete"
-        android:textColor="@color/bpWhite"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,5 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.776" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

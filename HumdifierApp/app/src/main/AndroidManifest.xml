@@ -11,15 +11,12 @@
         android:theme="@style/AppTheme"
         >
 
-        <service android:name=".Humidifier"
-            />
+        <service android:name=".Humidifier" />
         <activity android:name=".UserScheduleActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
 
-        <activity android:name=".ChartActivity"
-            android:screenOrientation="portrait"/>
+
 
 
 
