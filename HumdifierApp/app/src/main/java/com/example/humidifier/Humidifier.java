@@ -122,9 +122,9 @@ public class Humidifier extends Service{
                 //Example of push notification
                 NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
-                Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle("Error").setContentText("Something is wrong, please check your humidifier").
-                        setContentTitle("Error").build();
+               Notification notify=new Notification.Builder
+                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
+                        setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
 
                 notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 notif.notify(0, notify);
