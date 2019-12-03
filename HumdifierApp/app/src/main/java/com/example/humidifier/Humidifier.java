@@ -120,14 +120,14 @@ public class Humidifier extends Service{
             public void call(Object... args) {
 
                 //Example of push notification
-               // NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
                 Notification notify=new Notification.Builder
                         (getApplicationContext()).setContentTitle("Error").setContentText("Error Something is Wrong").
                         setContentTitle("Error").setSmallIcon(R.drawable.waterdrop).build();
 
-                //notify.flags |= Notification.FLAG_AUTO_CANCEL;
-                //notif.notify(0, notify);
+                notify.flags |= Notification.FLAG_AUTO_CANCEL;
+                notif.notify(0, notify);
             }
 
         }).on("warningNotification", new Emitter.Listener() {
