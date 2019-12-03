@@ -73,8 +73,8 @@ def GetWater():
 
 def MapWater(rawWater):
 	#Constants
-	maxIn = 0x0FB4
-	minIn = 0x01F2
+	maxIn = 0x0FA0
+	minIn = 0x0220
 	rangeIn = maxIn - minIn
 	print("Raw Water:",hex(rawWater))
 	maxOut = 100
@@ -288,20 +288,19 @@ def MainLoop():
 		#Handle###########
 
 		#Water level Handling
-		if water >= 95:
+		if water == 100:
 			waterFlag75 = 0
 			waterFlag50 = 0
 			waterFlag25 = 0
-		elif (water < 76 and water > 74) or (water > 49 and water < 51):
-			if (water > 70 and waterFlag75 != 1) or (water < 55 and waterFlag50 != 1):
-
-				jWater = {"WaterLevel": newWater}
-				z = json.dumps(jWater)
-				sio.emit('waterLvl-Warning', z)
-				if water == 50:
-					waterFlag50 = 1
-				else:
-					waterFlag75 = 1
+		elif (wa
+ter < 76 and water > 74) or (water > 49 and water < 51):
+			jWater = {"WaterLevel": newWater}
+			z = json.dumps(jWater)
+			sio.emit('waterLvl-Warning', z)
+			if water == 50:
+				waterFlag50 = 1
+			else:
+				waterFlag75 = 1
 		elif water == 25:
 			newTime = time.time()
 			if(newTime - oldWaterTime) >= (30 * 60) or waterFlag25 == 0:
@@ -310,9 +309,6 @@ def MainLoop():
 				sio.emit('refill-flag', jm)
 				waterFlag25 = 1
 				oldWaterTime = time.time()
-
-		if water > 30:
-			waterFlags = 0;
 
 		#Error Handling
 		#CheckError()
