@@ -123,12 +123,13 @@ public class Humidifier extends Service{
                 NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
                 Notification notify=new Notification.Builder
-                        (getApplicationContext()).setContentTitle(tittle).setContentText(body).
-                        setContentTitle(subject).setSmallIcon(R.drawable.abc).build();
+                        (getApplicationContext()).setContentTitle("Error").setContentText("Something is wrong, please check your humidifier").
+                        setContentTitle("Error").build();
 
                 notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 notif.notify(0, notify);
             }
+
         }).on("warningNotification", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
