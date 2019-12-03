@@ -60,6 +60,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:textStyle="bold"
+        android:textColor="@color/colorblack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/onswitch"
 
