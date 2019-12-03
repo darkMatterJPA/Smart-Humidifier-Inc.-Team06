@@ -121,9 +121,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
             public void onClick(View v){
                 if(mServiceBound) {
-                    String start = (Integer.toString(startTimePicker.getHour())+Integer.toString(startTimePicker.getMinute()));
+                    String start = (String.format("%02d",startTimePicker.getHour()) + String.format("%02d", startTimePicker.getMinute()));
+
                   //  startTimePicker.ge
-                    String end = (Integer.toString(endTimePicker.getHour())+Integer.toString(endTimePicker.getMinute()));
+                    String end = (String.format("%02d", endTimePicker.getHour())+String.format("%02d", endTimePicker.getMinute()));
 
 
 
